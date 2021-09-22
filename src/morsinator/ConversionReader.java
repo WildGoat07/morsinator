@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import morsinator.reader.ConversionRow;
+
 public class ConversionReader {
     private enum State {
         READ_LETTER,
