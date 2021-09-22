@@ -1,117 +1,119 @@
 package morsinator.collections;
 
-public class MorsiList<E>
-{
-	private Node<E> _first;
-	private Node<E> _last;
-	private int count;
+public class MorsiList<E> {
+    private Node<E> _first;
+    private Node<E> _last;
+    private int count;
 
-	public static class Node<E>
-	{
-		public Node(E value, Node<E> previous, Node<E> next)
-		{
-			_value = value;
-			_next = next;
-			_previous = previous;
-		}
+    public static class Node<E> {
+        public Node(E value, Node<E> previous, Node<E> next) {
+            _value = value;
+            _next = next;
+            _previous = previous;
+        }
 
-		public E _value;
-		protected Node<E> _next;
-		protected Node<E> _previous;
+        private E _value;
+        protected Node<E> _next;
+        protected Node<E> _previous;
 
-		public Node<E> next()
-		{
-			return _next;
-		}
+        public E getValue() {
+            return _value;
+        }
 
-		public Node<E> previous()
-		{
-			return _previous;
-		}
-	}
+        public void setValue(E value) {
+            _value = value;
+        }
 
-	public Node<E> first()
-	{
-		return _first;
-	}
-	
-	public Node<E> last()
-	{
-		return _last;
-	}
+        public Node<E> next() {
+            return _next;
+        }
 
-	public Node<E> add(E item) {
-		Node<E> added;
+        public Node<E> previous() {
+            return _previous;
+        }
+    }
 
-		if (_first == null)
-		{
-			added = _first = _last = new Node<E>(item, null, null);
-		}
-		else
-		{
-			added = _last = _last._next = new Node<E>(item, _last, null);
-		}
+    public Node<E> first() {
+        return _first;
+    }
 
-		++count;
-		return added;
-	}
+    public Node<E> last() {
+        return _last;
+    }
 
-	public void clear() {
-		_first = _last = null;
-		count = 0;
-	}
+    public Node<E> add(E item) {
+        Node<E> added;
 
-	public boolean contains(E item) {
-		for (Node<E> n = _first; n != null; n = n._next)
-			if (n._value.equals(item))
-				return true;
+        if (_first == null) {
+            added = _first = _last = new Node<E>(item, null, null);
+        } else {
+            added = _last = _last._next = new Node<E>(item, _last, null);
+        }
 
-		return false;
-	}
+        ++count;
+        return added;
+    }
 
-	public boolean remove(Node<E> node) {
-		if(_first == node) _first = node._next;
-		if(_last == node) _last = node._previous;
-		if(node._previous != null) node._previous._next = node._next;
-		if(node._next != null) node._next._previous = node._previous;
+    public void clear() {
+        _first = _last = null;
+        count = 0;
+    }
 
-		--count;
-		return true;
-	}
+    public boolean contains(E item) {
+        for (Node<E> n = _first; n != null; n = n._next)
+            if (n._value.equals(item))
+                return true;
 
-	public Node<E> insertBefore(Node<E> node, E item) {
-		Node<E> added;
+        return false;
+    }
 
-		if(node == null) {
-			if(_first == null) {
-				added = _last = _first = new Node<E>(item, null, null);
-			} else {
-				added = _last = _last._next = new Node<E>(item, _last, null);
-			}
-		} else if(node == _first) {
-			added = node._previous = _first = new Node<E>(item, null, node);
-		} else {
-			added = node._previous = node._previous._next = new Node<E>(item, node._previous, node);
-		}
+    public boolean remove(Node<E> node) {
+        if (_first == node)
+            _first = node._next;
+        if (_last == node)
+            _last = node._previous;
+        if (node._previous != null)
+            node._previous._next = node._next;
+        if (node._next != null)
+            node._next._previous = node._previous;
 
-		return added;
-	}
+        --count;
+        return true;
+    }
 
-	public Node<E> insertAfter(Node<E> node, E item) {
-		Node<E> added;
+    public Node<E> insertBefore(Node<E> node, E item) {
+        Node<E> added;
 
-		if(node == null) {
-			if(_first == null) {
-				added = _first = _last = new Node<E>(item, null, null);
-			} else {
-				added = _first = _first._previous = new Node<E>(item, null, _first);
-			}
-		} else if(node == _last) {
-			added = node._next = _last = new Node<E>(item, node, null);
-		} else {
-			added = node._next = node._next._previous = new Node<E>(item, node, node._next);
-		}
+        if (node == null) {
+            if (_first == null) {
+                added = _last = _first = new Node<E>(item, null, null);
+            } else {
+                added = _last = _last._next = new Node<E>(item, _last, null);
+            }
+        } else if (node == _first) {
+            added = node._previous = _first = new Node<E>(item, null, node);
+        } else {
+            added = node._previous = node._previous._next = new Node<E>(item, node._previous, node);
+        }
 
-		return added;
-	}
+        return added;
+    }
+
+    public Node<E> insertAfter(Node<E> node, E item) {
+        Node<E> added;
+
+        if (node == null) {
+            if (_first == null) {
+                added = _first = _last = new Node<E>(item, null, null);
+            } else {
+                added = _first = _first._previous = new Node<E>(item, null, _first);
+            }
+        } else if (node == _last) {
+            added = node._next = _last = new Node<E>(item, node, null);
+        } else {
+            added = node._next = node._next._previous = new Node<E>(item, node, node._next);
+        }
+
+        return added;
+    }
 }
