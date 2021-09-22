@@ -82,30 +82,26 @@ public class MorsiList<E> {
     }
 
     public Node<E> insertBefore(Node<E> node, E item) {
-        Node<E> added;
-
         if (node == null) {
             throw new NullPointerException("node ne peut pas être null");
         } else if (node == _first) {
-            added = node._previous = _first = new Node<E>(item, null, node);
+            node._previous = _first = new Node<E>(item, null, node);
         } else {
-            added = node._previous = node._previous._next = new Node<E>(item, node._previous, node);
+            node._previous = node._previous._next = new Node<E>(item, node._previous, node);
         }
 
-        return added;
+        return node._previous;
     }
 
     public Node<E> insertAfter(Node<E> node, E item) {
-        Node<E> added;
-
         if (node == null) {
             throw new NullPointerException("node ne peut pas être null");
         } else if (node == _last) {
-            added = node._next = _last = new Node<E>(item, node, null);
+            node._next = _last = new Node<E>(item, node, null);
         } else {
-            added = node._next = node._next._previous = new Node<E>(item, node, node._next);
+            node._next = node._next._previous = new Node<E>(item, node, node._next);
         }
 
-        return added;
+        return node._next;
     }
 }
