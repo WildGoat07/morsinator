@@ -24,20 +24,20 @@ public class MorsiList<E> {
             _value = value;
         }
 
-        public Node<E> next() {
+        public Node<E> getNext() {
             return _next;
         }
 
-        public Node<E> previous() {
+        public Node<E> getPrevious() {
             return _previous;
         }
     }
 
-    public Node<E> first() {
+    public Node<E> getFirst() {
         return _first;
     }
 
-    public Node<E> last() {
+    public Node<E> getLast() {
         return _last;
     }
 
