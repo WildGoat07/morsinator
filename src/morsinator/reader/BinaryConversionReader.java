@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import morsinator.reader.ConversionRow;
+import morsinator.reader.ConversionReaderException;
 
 public class BinaryConversionReader {
     private enum State {
@@ -29,7 +30,13 @@ public class BinaryConversionReader {
     public void read() throws IOException {
         byte[] buf = new byte[1024];
         state = State.READ_LETTER;
-        int bufLen = stream.read(buf);
+        int bufLen;
+
+        try {
+            bufLen = stream.read(buf);
+        } catch(IOException exception) {
+            throw new ConversionReaderException("Erreur de lecture du fichier", 0);
+        }
 
         while(bufLen != -1) {
             for(int i = 0; i < bufLen; i++) {
@@ -42,8 +49,7 @@ public class BinaryConversionReader {
                             curRow.letter = (char)b;
                             state = State.READ_EQUAL;
                         } else if(b != ' ' && b != '\n' && b != '\t') {
-                            System.err.println("Lettre invalide");
-                            System.exit(1);
+                            throw new ConversionReaderException("Lettre invalide", 0);
                         }
 
                         break;
@@ -52,8 +58,7 @@ public class BinaryConversionReader {
                         if(b == '=') {
                             state = State.READ_FIRST_MORSE_CHAR;
                         } else if(b != ' ' && b != '\n' && b != '\t') {
-                            System.err.println("Égal attendu");
-                            System.exit(1);
+                            throw new ConversionReaderException("Égal attendu", 0);
                         }
 
                         break;
@@ -63,8 +68,7 @@ public class BinaryConversionReader {
                             morseBuilder = new StringBuilder("" + (char)b);
                             state = State.READ_MORSE_SEQUENCE;
                         } else if(b != ' ' && b != '\n' && b != '\t') {
-                            System.err.println("Caractère morse invalide");
-                            System.exit(1);
+                            throw new ConversionReaderException("Caractère morse invalide", 0);
                         }
 
                         break;
@@ -77,15 +81,18 @@ public class BinaryConversionReader {
                             curRow.morse = morseBuilder.toString();
                             rows.add(curRow);
                         } else {
-                            System.err.println("Caractère morse invalide");
-                            System.exit(1);
+                            throw new ConversionReaderException("Caractère morse invalide", 0);
                         }
 
                         break;
                 }
             }
 
-            bufLen = stream.read(buf);
+            try {
+                bufLen = stream.read(buf);
+            } catch(IOException exception) {
+                throw new ConversionReaderException("Erreur de lecture du fichier", 0);
+            }
         }
     }
 }
