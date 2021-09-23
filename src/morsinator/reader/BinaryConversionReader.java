@@ -1,4 +1,4 @@
-package morsinator;
+package morsinator.reader;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import morsinator.reader.ConversionRow;
 
-public class ConversionReader {
+public class BinaryConversionReader {
     private enum State {
         READ_LETTER,
         READ_EQUAL,
@@ -21,7 +21,7 @@ public class ConversionReader {
     private StringBuilder morseBuilder;
     private ArrayList<ConversionRow> rows;
 
-    public ConversionReader(String path) throws FileNotFoundException {
+    public BinaryConversionReader(String path) throws FileNotFoundException {
         stream = new FileInputStream(path);
         rows = new ArrayList<>();
     }
