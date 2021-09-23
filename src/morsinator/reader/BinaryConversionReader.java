@@ -1,14 +1,14 @@
 package morsinator.reader;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import morsinator.reader.ConversionRow;
+import morsinator.reader.ConversionReader;
 import morsinator.reader.ConversionReaderException;
+import morsinator.collections.MorsiList;
 
-public class BinaryConversionReader {
+public class BinaryConversionReader implements ConversionReader {
     private enum State {
         READ_LETTER,
         READ_EQUAL,
@@ -16,18 +16,11 @@ public class BinaryConversionReader {
         READ_MORSE_SEQUENCE
     }
 
-    private FileInputStream stream;
     private State state;
     private ConversionRow curRow;
     private StringBuilder morseBuilder;
-    private ArrayList<ConversionRow> rows;
 
-    public BinaryConversionReader(String path) throws FileNotFoundException {
-        stream = new FileInputStream(path);
-        rows = new ArrayList<>();
-    }
-
-    public void read() throws IOException {
+    public void fill(InputStream stream, MorsiList<ConversionRow> list) {
         byte[] buf = new byte[1024];
         state = State.READ_LETTER;
         int bufLen;
@@ -79,7 +72,7 @@ public class BinaryConversionReader {
                         } else if(b == ' ' || b == '\n' || b == '\t') {
                             state = State.READ_LETTER;
                             curRow.morse = morseBuilder.toString();
-                            rows.add(curRow);
+                            list.add(curRow);
                         } else {
                             throw new ConversionReaderException("Caractère morse invalide", 0);
                         }
