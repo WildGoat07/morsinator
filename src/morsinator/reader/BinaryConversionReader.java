@@ -90,5 +90,9 @@ public class BinaryConversionReader implements ConversionReader {
                 throw new ConversionReaderException("Erreur de lecture du fichier", row);
             }
         }
+
+        if(state != State.READ_LETTER) {
+            throw new ConversionReaderException("Fin de fichier inattendue", row);
+        }
     }
 }
