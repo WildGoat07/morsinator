@@ -6,6 +6,7 @@ import java.io.IOException;
 import morsinator.reader.ConversionRow;
 import morsinator.reader.ConversionReader;
 import morsinator.reader.ConversionReaderException;
+import morsinator.collections.MorsiBinaryTree;
 import morsinator.collections.MorsiList;
 
 public class BinaryConversionReader implements ConversionReader {
@@ -20,7 +21,7 @@ public class BinaryConversionReader implements ConversionReader {
     private ConversionRow curRow;
     private StringBuilder morseBuilder;
 
-    public void fill(InputStream stream, MorsiList<ConversionRow> list) {
+    public void fill(InputStream stream, MorsiList<ConversionRow> list, MorsiBinaryTree<String, Character> tree) {
         byte[] buf = new byte[1024];
         state = State.READ_LETTER;
         int bufLen;

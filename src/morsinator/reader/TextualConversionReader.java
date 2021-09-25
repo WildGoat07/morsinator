@@ -3,13 +3,13 @@ package morsinator.reader;
 import java.io.*;
 import java.util.*;
 
+import morsinator.collections.MorsiBinaryTree;
 import morsinator.collections.MorsiList;
 
 public class TextualConversionReader implements ConversionReader {
 
     @Override
-    public void fill(InputStream stream, MorsiList<ConversionRow> tm) {
-        // TODO la vérification du code morse se ferra en même temps que l'arbre binaire
+    public void fill(InputStream stream, MorsiList<ConversionRow> tm, MorsiBinaryTree<String, Character> mt) {
         Reader reader = new InputStreamReader(new BufferedInputStream(stream));
         int row = 1;
         HashSet<String> addedLetters = new HashSet<>();
