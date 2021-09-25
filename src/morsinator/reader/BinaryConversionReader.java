@@ -25,16 +25,21 @@ public class BinaryConversionReader implements ConversionReader {
         byte[] buf = new byte[1024];
         state = State.READ_LETTER;
         int bufLen;
+        int row = 1;
 
         try {
             bufLen = stream.read(buf);
         } catch(IOException exception) {
-            throw new ConversionReaderException("Erreur de lecture du fichier", 0);
+            throw new ConversionReaderException("Erreur de lecture du fichier", row);
         }
 
         while(bufLen != -1) {
             for(int i = 0; i < bufLen; i++) {
                 byte b = buf[i];
+
+                if(b == '\n') {
+                    row++;
+                }
 
                 switch(state) {
                     case READ_LETTER:
@@ -43,7 +48,7 @@ public class BinaryConversionReader implements ConversionReader {
                             curRow.letter = (char)b;
                             state = State.READ_EQUAL;
                         } else if(b != ' ' && b != '\n' && b != '\t') {
-                            throw new ConversionReaderException("Lettre invalide", 0);
+                            throw new ConversionReaderException("Lettre invalide", row);
                         }
 
                         break;
@@ -52,7 +57,7 @@ public class BinaryConversionReader implements ConversionReader {
                         if(b == '=') {
                             state = State.READ_FIRST_MORSE_CHAR;
                         } else if(b != ' ' && b != '\n' && b != '\t') {
-                            throw new ConversionReaderException("Égal attendu", 0);
+                            throw new ConversionReaderException("Égal attendu", row);
                         }
 
                         break;
@@ -62,7 +67,7 @@ public class BinaryConversionReader implements ConversionReader {
                             morseBuilder = new StringBuilder("" + (char)b);
                             state = State.READ_MORSE_SEQUENCE;
                         } else if(b != ' ' && b != '\n' && b != '\t') {
-                            throw new ConversionReaderException("Caractère morse invalide", 0);
+                            throw new ConversionReaderException("Caractère morse invalide", row);
                         }
 
                         break;
@@ -75,7 +80,7 @@ public class BinaryConversionReader implements ConversionReader {
                             curRow.morse = morseBuilder.toString();
                             list.add(curRow);
                         } else {
-                            throw new ConversionReaderException("Caractère morse invalide", 0);
+                            throw new ConversionReaderException("Caractère morse invalide", row);
                         }
 
                         break;
@@ -85,7 +90,7 @@ public class BinaryConversionReader implements ConversionReader {
             try {
                 bufLen = stream.read(buf);
             } catch(IOException exception) {
-                throw new ConversionReaderException("Erreur de lecture du fichier", 0);
+                throw new ConversionReaderException("Erreur de lecture du fichier", row);
             }
         }
     }
