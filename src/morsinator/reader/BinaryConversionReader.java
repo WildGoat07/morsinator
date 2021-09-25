@@ -3,9 +3,6 @@ package morsinator.reader;
 import java.io.InputStream;
 import java.io.IOException;
 
-import morsinator.reader.ConversionRow;
-import morsinator.reader.ConversionReader;
-import morsinator.reader.ConversionReaderException;
 import morsinator.collections.MorsiBinaryTree;
 import morsinator.collections.MorsiList;
 
