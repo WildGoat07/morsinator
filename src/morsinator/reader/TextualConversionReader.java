@@ -47,6 +47,14 @@ public class TextualConversionReader implements ConversionReader {
                 ++row;
                 value = value.trim();
                 tm.add(new ConversionRow(key.charAt(0), value));
+
+                if (mt.get(value) != null)
+                    throw new ConversionReaderException("Code morse déjà ajouté sous la lettre '" + mt.get(value), row);
+                try {
+                    mt.set(value, key.charAt(0));
+                } catch (RuntimeException e) {
+                    throw new ConversionReaderException(row, e);
+                }
                 // si on est à la fin du fichier, on arrête
                 if (currentChar == -1)
                     break;
