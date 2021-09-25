@@ -9,7 +9,7 @@ import java.util.*;
  * @param <E> type de la clé
  * @param <F> type de la valeur
  */
-public class MorsiTree<E, F> {
+public class MorsiBinaryTree<E, F> {
     /**
      * Simple délégué pour convertir une clé en morse en une route
      * 
@@ -46,7 +46,7 @@ public class MorsiTree<E, F> {
         public E value;
     }
 
-    public MorsiTree(Function<? super E, ? extends Iterable<Boolean>> converter) {
+    public MorsiBinaryTree(Function<? super E, ? extends Iterable<Boolean>> converter) {
         baseNode = new Node<>();
         this.converter = converter;
     }
