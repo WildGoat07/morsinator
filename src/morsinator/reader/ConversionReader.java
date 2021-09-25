@@ -2,7 +2,7 @@ package morsinator.reader;
 
 import java.io.*;
 
-import morsinator.collections.MorsiList;
+import morsinator.collections.*;
 
 public interface ConversionReader {
     /**
@@ -10,8 +10,8 @@ public interface ConversionReader {
      * 
      * @param stream flux txetuel d'entrée
      * @param tm     liste de conversion texte -> morse
+     * @param mt     arbre de conversion morse -> texte
      * @throws IOException
      */
-    // TODO supporter l'abre binaire de déconversion
-    public void fill(InputStream stream, MorsiList<ConversionRow> tm);
+    public void fill(InputStream stream, MorsiList<ConversionRow> tm, MorsiBinaryTree<String, Character> mt);
 }
