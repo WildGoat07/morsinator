@@ -19,6 +19,17 @@ public class Morsinator {
             System.exit(1);
         }
 
+        boolean morseToText;
+
+        if(args[0].equals("-tm") || args[0].equals("--texte-morse")) {
+            morseToText = false;
+        } else if(args[0].equals("-mt") || args[0].equals("--morse-texte")) {
+            morseToText = true;
+        } else {
+            System.err.println("L'option " + args[0] + " est inconnue");
+            System.exit(1);
+        }
+
         FileInputStream conversionFile = null;
 
         try {
