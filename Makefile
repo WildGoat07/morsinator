@@ -1,9 +1,11 @@
 # dépendances
+Morsinator: ConversionRow ConversionReader BinaryConversionReader MorsiList ConversionReaderException
 ConversionReader: MorsiList ConversionRow MorsiBinaryTree
 TextualConversionReader: ConversionRow ConversionReader ConversionReaderException MorsiBinaryTree MorsiList
 BinaryConversionReader: ConversionRow ConversionReader ConversionReaderException MorsiBinaryTree MorsiList
 
 # alias
+Morsinator: bin/morsinator/Morsinator.class
 ConversionRow: bin/morsinator/reader/ConversionRow.class
 ConversionReader: bin/morsinator/reader/ConversionReader.class
 TextualConversionReader: bin/morsinator/reader/TextualConversionReader.class
@@ -13,6 +15,9 @@ MorsiList: bin/morsinator/collections/MorsiList.class
 MorsiBinaryTree: bin/morsinator/collections/MorsiBinaryTree.class
 
 # règles de compilation individuelle
+
+bin/morsinator/Morsinator.class: src/morsinator/Morsinator.java
+	javac --source-path src -d bin -implicit:none src/morsinator/Morsinator.java
 
 bin/morsinator/reader/ConversionRow.class: src/morsinator/reader/ConversionRow.java
 	javac --source-path src -d bin -implicit:none src/morsinator/reader/ConversionRow.java
