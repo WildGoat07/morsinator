@@ -1,6 +1,6 @@
 package morsinator.reader;
 
-import java.io.InputStream;
+import java.io.Reader;
 import java.io.IOException;
 
 import morsinator.collections.MorsiBinaryTree;
@@ -18,74 +18,69 @@ public class BinaryConversionReader implements ConversionReader {
     private ConversionRow curRow;
     private StringBuilder morseBuilder;
 
-    public void fill(InputStream stream, MorsiList<ConversionRow> list, MorsiBinaryTree<String, Character> tree) throws ConversionReaderException {
-        byte[] buf = new byte[1024];
+    public void fill(Reader reader, MorsiList<ConversionRow> list, MorsiBinaryTree<String, Character> tree) throws ConversionReaderException {
+        int c;
         state = State.READ_LETTER;
-        int bufLen;
         int row = 1;
 
         try {
-            bufLen = stream.read(buf);
+            c = reader.read();
         } catch(IOException exception) {
             throw new ConversionReaderException("Erreur de lecture du fichier", row);
         }
 
-        while(bufLen != -1) {
-            for(int i = 0; i < bufLen; i++) {
-                byte b = buf[i];
+        while(c != -1) {
+            if(c == '\n') {
+                row++;
+            }
 
-                if(b == '\n') {
-                    row++;
-                }
+            switch(state) {
+                case READ_LETTER:
+                    if(c >= 'A' && c <= 'Z') {
+                        curRow = new ConversionRow();
+                        curRow.letter = (char)c;
+                        state = State.READ_EQUAL;
+                    } else if(c != ' ' && c != '\n' && c != '\t') {
+                        throw new ConversionReaderException("Lettre invalide", row);
+                    }
 
-                switch(state) {
-                    case READ_LETTER:
-                        if(b >= 'A' && b <= 'Z') {
-                            curRow = new ConversionRow();
-                            curRow.letter = (char)b;
-                            state = State.READ_EQUAL;
-                        } else if(b != ' ' && b != '\n' && b != '\t') {
-                            throw new ConversionReaderException("Lettre invalide", row);
-                        }
+                    break;
 
-                        break;
+                case READ_EQUAL:
+                    if(c == '=') {
+                        state = State.READ_FIRST_MORSE_CHAR;
+                    } else if(c != ' ' && c != '\n' && c != '\t') {
+                        throw new ConversionReaderException("Égal attendu", row);
+                    }
 
-                    case READ_EQUAL:
-                        if(b == '=') {
-                            state = State.READ_FIRST_MORSE_CHAR;
-                        } else if(b != ' ' && b != '\n' && b != '\t') {
-                            throw new ConversionReaderException("Égal attendu", row);
-                        }
+                    break;
 
-                        break;
+                case READ_FIRST_MORSE_CHAR:
+                    if(c == '.' || c == '_') {
+                        morseBuilder = new StringBuilder("" + c);
+                        state = State.READ_MORSE_SEQUENCE;
+                    } else if(c != ' ' && c != '\n' && c != '\t') {
+                        throw new ConversionReaderException("Caractère morse invalide", row);
+                    }
 
-                    case READ_FIRST_MORSE_CHAR:
-                        if(b == '.' || b == '_') {
-                            morseBuilder = new StringBuilder("" + (char)b);
-                            state = State.READ_MORSE_SEQUENCE;
-                        } else if(b != ' ' && b != '\n' && b != '\t') {
-                            throw new ConversionReaderException("Caractère morse invalide", row);
-                        }
+                    break;
 
-                        break;
+                case READ_MORSE_SEQUENCE:
+                    if(c == '.' || c == '_') {
+                        morseBuilder.append(c);
+                    } else if(c == ' ' || c == '\n' || c == '\t') {
+                        state = State.READ_LETTER;
+                        curRow.morse = morseBuilder.toString();
+                        list.add(curRow);
+                    } else {
+                        throw new ConversionReaderException("Caractère morse invalide", row);
+                    }
 
-                    case READ_MORSE_SEQUENCE:
-                        if(b == '.' || b == '_') {
-                            morseBuilder.append((char)b);
-                        } else if(b == ' ' || b == '\n' || b == '\t') {
-                            state = State.READ_LETTER;
-                            curRow.morse = morseBuilder.toString();
-                            list.add(curRow);
-                        } else {
-                            throw new ConversionReaderException("Caractère morse invalide", row);
-                        }
-
-                        break;
-                }
+                    break;
             }
 
             try {
-                bufLen = stream.read(buf);
+                c = reader.read();
             } catch(IOException exception) {
                 throw new ConversionReaderException("Erreur de lecture du fichier", row);
             }
