@@ -55,7 +55,7 @@ public class TextualConversionReader implements ConversionReader {
                     tm.add(new ConversionRow(key.charAt(0), value));
 
                     if(mt.get(value) != null)
-                        throw new ConversionReaderException("Code morse déjà ajouté sous la lettre '" + mt.get(value) + "'", row);
+                        throw new ConversionReaderException("Code morse de '" + key + "' déjà ajouté sous la lettre '" + mt.get(value) + "'", row);
 
                     try {
                         mt.set(value, key.charAt(0));
