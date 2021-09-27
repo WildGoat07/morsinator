@@ -1,15 +1,13 @@
 # dépendances
-Morsinator: ConversionRow ConversionReader TextualConversionReader BinaryConversionReader MorsiList MorsiBinaryTree ConversionReaderException
+Morsinator: ConversionRow ConversionReader TextualConversionReader MorsiList MorsiBinaryTree ConversionReaderException
 ConversionReader: MorsiList ConversionRow MorsiBinaryTree ConversionReaderException
 TextualConversionReader: ConversionRow ConversionReader ConversionReaderException MorsiBinaryTree MorsiList
-BinaryConversionReader: ConversionRow ConversionReader ConversionReaderException MorsiBinaryTree MorsiList
 
 # alias
 Morsinator: bin/morsinator/Morsinator.class
 ConversionRow: bin/morsinator/reader/ConversionRow.class
 ConversionReader: bin/morsinator/reader/ConversionReader.class
 TextualConversionReader: bin/morsinator/reader/TextualConversionReader.class
-BinaryConversionReader: bin/morsinator/reader/BinaryConversionReader.class
 ConversionReaderException: bin/morsinator/reader/ConversionReaderException.class
 MorsiList: bin/morsinator/collections/MorsiList.class
 MorsiBinaryTree: bin/morsinator/collections/MorsiBinaryTree.class
@@ -27,9 +25,6 @@ bin/morsinator/reader/ConversionReader.class: src/morsinator/reader/ConversionRe
 
 bin/morsinator/reader/TextualConversionReader.class: src/morsinator/reader/TextualConversionReader.java
 	javac --source-path src -d bin -implicit:none src/morsinator/reader/TextualConversionReader.java
-
-bin/morsinator/reader/BinaryConversionReader.class: src/morsinator/reader/BinaryConversionReader.java
-	javac --source-path src -d bin -implicit:none src/morsinator/reader/BinaryConversionReader.java
 
 bin/morsinator/reader/ConversionReaderException.class: src/morsinator/reader/ConversionReaderException.java
 	javac --source-path src -d bin -implicit:none src/morsinator/reader/ConversionReaderException.java
