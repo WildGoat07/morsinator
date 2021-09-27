@@ -8,8 +8,7 @@ import morsinator.collections.MorsiList;
 import morsinator.collections.MorsiBinaryTree;
 import morsinator.reader.ConversionReaderException;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 
 public class Morsinator {
     public static void main(String[] args) {
@@ -59,10 +58,15 @@ public class Morsinator {
         MorsiBinaryTree<String, Character> morsiBinaryTree = new MorsiBinaryTree<String, Character>(MorsiBinaryTree.morseConvert);
 
         try {
-            conversionReader.fill(conversionFile, morsiList, morsiBinaryTree);
-        } catch(ConversionReaderException exception) {
-            System.err.println("Erreur de lecture de la table de conversion\n" +
-                args[2] + ":" + exception.getRow() + " : " + exception.getMessage());
+            conversionReader.fill(new InputStreamReader(new BufferedInputStream(conversionFile)), morsiList,
+                    morsiBinaryTree);
+            conversionFile.close();
+        } catch (ConversionReaderException exception) {
+            System.err.println("Erreur de lecture de la table de conversion\n" + args[2] + ":" + exception.getRow()
+                    + " : " + exception.getMessage());
+            System.exit(1);
+        } catch (IOException exception) {
+            System.err.println("Erreur de fermeture du fichier\n" + exception.getMessage());
             System.exit(1);
         }
     }

@@ -9,8 +9,7 @@ import morsinator.collections.MorsiList;
 public class TextualConversionReader implements ConversionReader {
 
     @Override
-    public void fill(InputStream stream, MorsiList<ConversionRow> tm, MorsiBinaryTree<String, Character> mt) {
-        Reader reader = new InputStreamReader(new BufferedInputStream(stream));
+    public void fill(Reader reader, MorsiList<ConversionRow> tm, MorsiBinaryTree<String, Character> mt) {
         int row = 1;
         HashSet<String> addedLetters = new HashSet<>();
         tm.clear();
