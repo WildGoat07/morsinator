@@ -5,7 +5,6 @@ import java.util.*;
 
 import morsinator.collections.MorsiBinaryTree;
 import morsinator.collections.MorsiList;
-import morsinator.reader.ConversionReaderException;
 
 public class TextualConversionReader implements ConversionReader {
     private int readReader(Reader reader, int row) throws ConversionReaderException {
