@@ -5,6 +5,7 @@ import morsinator.reader.ConversionReader;
 import morsinator.reader.TextualConversionReader;
 import morsinator.reader.BinaryConversionReader;
 import morsinator.collections.MorsiList;
+import morsinator.collections.MorsiBinaryTree;
 import morsinator.reader.ConversionReaderException;
 
 import java.io.FileInputStream;
@@ -55,9 +56,10 @@ public class Morsinator {
         }
 
         MorsiList<ConversionRow> morsiList = new MorsiList<ConversionRow>();
+        MorsiBinaryTree<String, Character> morsiBinaryTree = new MorsiBinaryTree<String, Character>(MorsiBinaryTree.morseConvert);
 
         try {
-            conversionReader.fill(conversionFile, morsiList, null);
+            conversionReader.fill(conversionFile, morsiList, morsiBinaryTree);
         } catch(ConversionReaderException exception) {
             System.err.println("Erreur de lecture de la table de conversion\n" +
                 args[2] + ":" + exception.getRow() + " : " + exception.getMessage());
