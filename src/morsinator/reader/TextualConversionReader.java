@@ -5,11 +5,12 @@ import java.util.*;
 
 import morsinator.collections.MorsiBinaryTree;
 import morsinator.collections.MorsiList;
+import morsinator.reader.ConversionReaderException;
 
 public class TextualConversionReader implements ConversionReader {
 
     @Override
-    public void fill(InputStream stream, MorsiList<ConversionRow> tm, MorsiBinaryTree<String, Character> mt) {
+    public void fill(InputStream stream, MorsiList<ConversionRow> tm, MorsiBinaryTree<String, Character> mt) throws ConversionReaderException {
         Reader reader = new InputStreamReader(new BufferedInputStream(stream));
         int row = 1;
         HashSet<String> addedLetters = new HashSet<>();
