@@ -1,5 +1,5 @@
 # dépendances
-Morsinator: ConversionRow ConversionReader TextualConversionReader BinaryConversionReader MorsiList ConversionReaderException
+Morsinator: ConversionRow ConversionReader TextualConversionReader BinaryConversionReader MorsiList MorsiBinaryTree ConversionReaderException
 ConversionReader: MorsiList ConversionRow MorsiBinaryTree
 TextualConversionReader: ConversionRow ConversionReader ConversionReaderException MorsiBinaryTree MorsiList
 BinaryConversionReader: ConversionRow ConversionReader ConversionReaderException MorsiBinaryTree MorsiList
