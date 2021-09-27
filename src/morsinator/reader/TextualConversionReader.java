@@ -15,6 +15,20 @@ public class TextualConversionReader implements ConversionReader {
         }
     }
 
+    private void registerRow(String key, String value, MorsiList<ConversionRow> tm, MorsiBinaryTree<String, Character> mt, int row) throws ConversionReaderException {
+        value = value.trim();
+        tm.add(new ConversionRow(key.charAt(0), value));
+
+        if(mt.get(value) != null)
+            throw new ConversionReaderException("Code morse de '" + key + "' déjà ajouté sous la lettre '" + mt.get(value) + "'", row);
+
+        try {
+            mt.set(value, key.charAt(0));
+        } catch(RuntimeException e) {
+            throw new ConversionReaderException(row, e);
+        }
+    }
+
     @Override
     public void fill(Reader reader, MorsiList<ConversionRow> tm, MorsiBinaryTree<String, Character> mt) throws ConversionReaderException {
         int row = 1;
@@ -50,18 +64,7 @@ public class TextualConversionReader implements ConversionReader {
             } else {
                 // étape 2 : lecture de la valeur (le code morse)
                 if(currentChar == '\n' && !value.trim().isEmpty()) {
-                    value = value.trim();
-                    tm.add(new ConversionRow(key.charAt(0), value));
-
-                    if(mt.get(value) != null)
-                        throw new ConversionReaderException("Code morse de '" + key + "' déjà ajouté sous la lettre '" + mt.get(value) + "'", row);
-
-                    try {
-                        mt.set(value, key.charAt(0));
-                    } catch(RuntimeException e) {
-                        throw new ConversionReaderException(row, e);
-                    }
-
+                    registerRow(key, value, tm, mt, row);
                     readingKey = true;
                     key = "";
                 } else {
@@ -74,5 +77,8 @@ public class TextualConversionReader implements ConversionReader {
 
         if(readingKey && !key.trim().isEmpty())
             throw new ConversionReaderException("Fin de fichier inattendue", row);
+        else if(!readingKey) {
+            registerRow(key, value, tm, mt, row);
+        }
     }
 }
