@@ -1,6 +1,6 @@
 package morsinator.reader;
 
-public class ConversionReaderException extends RuntimeException {
+public class ConversionReaderException extends Exception {
     private int row;
 
     public ConversionReaderException(int row) {
