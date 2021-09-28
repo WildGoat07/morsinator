@@ -13,5 +13,5 @@ public interface ConversionReader {
      * @param mt     arbre de conversion morse -> texte
      * @throws IOException
      */
-    public void fill(Reader reader, MorsiList<ConversionRow> tm, MorsiBinaryTree<String, Character> mt) throws ConversionReaderException;
+    public void fill(Reader reader, ConversionList tm, MorsiBinaryTree<String, Character> mt) throws ConversionReaderException;
 }

@@ -3,7 +3,7 @@ package morsinator;
 import morsinator.reader.ConversionRow;
 import morsinator.reader.ConversionReader;
 import morsinator.reader.TextualConversionReader;
-import morsinator.collections.MorsiList;
+import morsinator.collections.ConversionList;
 import morsinator.collections.MorsiBinaryTree;
 import morsinator.reader.ConversionReaderException;
 
@@ -40,11 +40,11 @@ public class Morsinator {
         }
 
         ConversionReader conversionReader = new TextualConversionReader();
-        MorsiList<ConversionRow> morsiList = new MorsiList<ConversionRow>();
+        ConversionList conversionList = new ConversionList();
         MorsiBinaryTree<String, Character> morsiBinaryTree = new MorsiBinaryTree<String, Character>(MorsiBinaryTree.morseConvert);
 
         try {
-            conversionReader.fill(new InputStreamReader(new BufferedInputStream(conversionFile)), morsiList,
+            conversionReader.fill(new InputStreamReader(new BufferedInputStream(conversionFile)), conversionList,
                     morsiBinaryTree);
             conversionFile.close();
         } catch (ConversionReaderException exception) {

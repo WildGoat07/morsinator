@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 
 import morsinator.collections.MorsiBinaryTree;
-import morsinator.collections.MorsiList;
+import morsinator.collections.ConversionList;
 
 public class TextualConversionReader implements ConversionReader {
     private int readReader(Reader reader, int row) throws ConversionReaderException {
@@ -15,7 +15,7 @@ public class TextualConversionReader implements ConversionReader {
         }
     }
 
-    private void registerRow(String key, String value, MorsiList<ConversionRow> tm, MorsiBinaryTree<String, Character> mt, int row) throws ConversionReaderException {
+    private void registerRow(String key, String value, ConversionList tm, MorsiBinaryTree<String, Character> mt, int row) throws ConversionReaderException {
         value = value.trim();
         tm.add(new ConversionRow(key.charAt(0), value));
 
@@ -30,7 +30,7 @@ public class TextualConversionReader implements ConversionReader {
     }
 
     @Override
-    public void fill(Reader reader, MorsiList<ConversionRow> tm, MorsiBinaryTree<String, Character> mt) throws ConversionReaderException {
+    public void fill(Reader reader, ConversionList tm, MorsiBinaryTree<String, Character> mt) throws ConversionReaderException {
         int row = 1;
         HashSet<String> addedLetters = new HashSet<>();
         tm.clear();
