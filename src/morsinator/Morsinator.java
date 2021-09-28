@@ -79,6 +79,18 @@ public class Morsinator {
         }
     }
 
+    private static InputStreamReader openReader(String[] args) {
+        FileInputStream inputStream = openInputStream(args);
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        return new InputStreamReader(bufferedInputStream);
+    }
+
+    private static OutputStreamWriter openWriter(String[] args) {
+        FileOutputStream outputStream = openOutputStream(args);
+        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
+        return new OutputStreamWriter(bufferedOutputStream);
+    }
+
     public static void main(String[] args) {
         if(args.length != 4) {
             printHelpAndExit();
@@ -89,8 +101,7 @@ public class Morsinator {
         ConversionBinaryTree conversionBinaryTree = new ConversionBinaryTree();
 
         getConversionCollections(args, conversionList, conversionBinaryTree);
-
-        FileInputStream inputStream = openInputStream(args);
-        FileOutputStream outputStream = openOutputStream(args);
+        Reader reader = openReader(args);
+        Writer writer = openWriter(args);
     }
 }
