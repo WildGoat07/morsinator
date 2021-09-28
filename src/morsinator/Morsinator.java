@@ -1,11 +1,7 @@
 package morsinator;
 
-import morsinator.reader.ConversionRow;
-import morsinator.reader.ConversionReader;
-import morsinator.reader.TextualConversionReader;
-import morsinator.collections.ConversionBinaryTree;
-import morsinator.collections.ConversionList;
-import morsinator.reader.ConversionReaderException;
+import morsinator.reader.*;
+import morsinator.collections.*;
 
 import java.io.*;
 
@@ -30,7 +26,7 @@ public class Morsinator {
         }
     }
 
-    private static FileInputStream getConversionFileStream(String[] args) {
+    private static InputStream getConversionFileStream(String[] args) {
         try {
             return new FileInputStream(args[1]);
         } catch(FileNotFoundException exception) {
@@ -41,13 +37,13 @@ public class Morsinator {
         return null;
     }
 
-    private static void getConversionCollections(String[] args, ConversionList conversionList, ConversionBinaryTree conversionTree) {
-        FileInputStream conversionFile = getConversionFileStream(args);
+    private static void getConversionCollections(String[] args, TextConversion textConversion, MorseConversion morseConversion) {
+        InputStream conversionFile = getConversionFileStream(args);
         ConversionReader conversionReader = new TextualConversionReader();
 
         try {
-            conversionReader.fill(new InputStreamReader(new BufferedInputStream(conversionFile)), conversionList,
-                    conversionTree);
+            conversionReader.fill(new InputStreamReader(new BufferedInputStream(conversionFile)), textConversion,
+                    morseConversion);
             conversionFile.close();
         } catch (ConversionReaderException exception) {
             System.err.println("Erreur de lecture de la table de conversion\n" + args[1] + ":" + exception.getRow()
@@ -59,7 +55,7 @@ public class Morsinator {
         }
     }
 
-    private static FileInputStream openInputStream(String[] args) {
+    private static InputStream openInputStream(String[] args) {
         try {
             return new FileInputStream(args[2]);
         } catch(FileNotFoundException exception) {
@@ -69,7 +65,7 @@ public class Morsinator {
         }
     }
 
-    private static FileOutputStream openOutputStream(String[] args) {
+    private static OutputStream openOutputStream(String[] args) {
         try {
             return new FileOutputStream(args[3]);
         } catch(FileNotFoundException exception) {
@@ -79,14 +75,14 @@ public class Morsinator {
         }
     }
 
-    private static InputStreamReader openReader(String[] args) {
-        FileInputStream inputStream = openInputStream(args);
+    private static Reader openReader(String[] args) {
+        InputStream inputStream = openInputStream(args);
         BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
         return new InputStreamReader(bufferedInputStream);
     }
 
-    private static OutputStreamWriter openWriter(String[] args) {
-        FileOutputStream outputStream = openOutputStream(args);
+    private static Writer openWriter(String[] args) {
+        OutputStream outputStream = openOutputStream(args);
         BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
         return new OutputStreamWriter(bufferedOutputStream);
     }
@@ -97,10 +93,10 @@ public class Morsinator {
         }
 
         boolean morseToText = parseOption(args);
-        ConversionList conversionList = new ConversionList();
-        ConversionBinaryTree conversionBinaryTree = new ConversionBinaryTree();
+        TextConversion textConversion = new ConversionList();
+        MorseConversion morseConversion = new ConversionBinaryTree();
 
-        getConversionCollections(args, conversionList, conversionBinaryTree);
+        getConversionCollections(args, textConversion, morseConversion);
         Reader reader = openReader(args);
         Writer writer = openWriter(args);
     }

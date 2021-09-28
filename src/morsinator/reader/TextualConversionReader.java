@@ -3,8 +3,7 @@ package morsinator.reader;
 import java.io.*;
 import java.util.*;
 
-import morsinator.collections.ConversionBinaryTree;
-import morsinator.collections.ConversionList;
+import morsinator.collections.*;
 
 public class TextualConversionReader implements ConversionReader {
     private int readReader(Reader reader, int row) throws ConversionReaderException {
@@ -15,25 +14,21 @@ public class TextualConversionReader implements ConversionReader {
         }
     }
 
-    private void registerRow(String key, String value, ConversionList tm, ConversionBinaryTree mt, int row) throws ConversionReaderException {
+    private void registerRow(String key, String value, TextConversion tm, MorseConversion mt, int row) throws ConversionReaderException {
         value = value.trim();
-        tm.add(new ConversionRow(key.charAt(0), value));
-
-        if(mt.get(value) != null)
-            throw new ConversionReaderException("Code morse de '" + key + "' déjà ajouté sous la lettre '" + mt.get(value) + "'", row);
+        tm.addRow(key.charAt(0), value);
 
         try {
-            mt.set(value, key.charAt(0));
-        } catch(RuntimeException e) {
+            mt.addRow(key.charAt(0), value);
+        } catch(AddException e) {
             throw new ConversionReaderException(row, e);
         }
     }
 
     @Override
-    public void fill(Reader reader, ConversionList tm, ConversionBinaryTree mt) throws ConversionReaderException {
+    public void fill(Reader reader, TextConversion tm, MorseConversion mt) throws ConversionReaderException {
         int row = 1;
         HashSet<String> addedLetters = new HashSet<>();
-        tm.clear();
 
         String key = "";
         String value = null;

@@ -5,6 +5,8 @@ import morsinator.collections.generics.MorsiBinaryTree;
 import java.util.function.*;
 import java.util.*;
 
+import morsinator.reader.ConversionReaderException;
+
 public class ConversionBinaryTree extends MorsiBinaryTree<String, Character> implements MorseConversion {
     /**
      * Simple délégué pour convertir une clé en morse en une route
@@ -33,6 +35,17 @@ public class ConversionBinaryTree extends MorsiBinaryTree<String, Character> imp
 
     public ConversionBinaryTree() {
         super(morseConvert);
+    }
+
+    public void addRow(char letter, String morse) throws AddException {
+        if(get(morse) != null)
+            throw new AddException("Code morse de '" + letter + "' d\u00e9j\u00e0 ajout\u00e9 sous la lettre '" + get(morse) + "'");
+
+        try {
+            set(morse, letter);
+        } catch(RuntimeException e) {
+            throw new AddException(e);
+        }
     }
 
     public char getLetter(String morse) {
