@@ -24,7 +24,7 @@ public class TextualMorseConverter implements MorseConverter {
                         if ((char) current == '\n') {
                             writer.write('\n');
                             firstWord = true;
-                        } else if ((char) current != ' ') {
+                        } else if ((char) current != ' ' && (char) current != '\r') {
                             if (!firstWord)
                                 writer.write(" / ");
                             firstWord = false;
@@ -39,7 +39,7 @@ public class TextualMorseConverter implements MorseConverter {
                             writer.write('\n');
                             firstWord = true;
                             step = Step.WAITING_FOR_TOKEN;
-                        } else
+                        } else if ((char) current != '\r')
                             writer.write(' ' + textConversion.getMorse((char) current));
                         break;
                     default:
