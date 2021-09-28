@@ -3,7 +3,7 @@ package morsinator.collections;
 import java.util.function.*;
 import java.util.*;
 
-public class ConversionBinaryTree extends MorsiBinaryTree<String, Character> {
+public class ConversionBinaryTree extends MorsiBinaryTree<String, Character> implements MorseConversion {
     /**
      * Simple délégué pour convertir une clé en morse en une route
      * 
@@ -31,5 +31,9 @@ public class ConversionBinaryTree extends MorsiBinaryTree<String, Character> {
 
     public ConversionBinaryTree() {
         super(morseConvert);
+    }
+
+    public char getLetter(String morse) {
+        return get(morse);
     }
 }
