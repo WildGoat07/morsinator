@@ -12,6 +12,15 @@ public class TextualMorseConverter implements MorseConverter {
         WORD_PARSING, WAITING_FOR_TOKEN
     }
 
+    private static final char[] ignoredChars = new char[] { '\n', '\r', ' ' };
+
+    private static boolean isCharIgnored(char toTest) {
+        for (int i = 0; i < ignoredChars.length; ++i)
+            if (ignoredChars[i] == toTest)
+                return true;
+        return false;
+    }
+
     @Override
     public void textToMorse(Reader reader, Writer writer, TextConversion textConversion) {
         int current;
@@ -21,10 +30,7 @@ public class TextualMorseConverter implements MorseConverter {
             while ((current = reader.read()) != -1) {
                 switch (step) {
                     case WAITING_FOR_TOKEN:
-                        if ((char) current == '\n') {
-                            writer.write('\n');
-                            firstWord = true;
-                        } else if ((char) current != ' ' && (char) current != '\r') {
+                        if (!isCharIgnored((char) current)) {
                             if (!firstWord)
                                 writer.write(" / ");
                             firstWord = false;
@@ -33,13 +39,9 @@ public class TextualMorseConverter implements MorseConverter {
                         }
                         break;
                     case WORD_PARSING:
-                        if ((char) current == ' ')
+                        if (isCharIgnored((char) current))
                             step = Step.WAITING_FOR_TOKEN;
-                        else if ((char) current == '\n') {
-                            writer.write('\n');
-                            firstWord = true;
-                            step = Step.WAITING_FOR_TOKEN;
-                        } else if ((char) current != '\r')
+                        else
                             writer.write(' ' + textConversion.getMorse((char) current));
                         break;
                     default:
