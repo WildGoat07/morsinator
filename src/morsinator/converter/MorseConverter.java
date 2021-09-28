@@ -2,20 +2,25 @@ package morsinator.converter;
 
 import java.io.*;
 
+import morsinator.collections.MorseConversion;
+import morsinator.collections.TextConversion;
+
 public interface MorseConverter {
     /**
-     * Converti une source de texte en morse
+     * Convertit une source de texte en morse
      * 
-     * @param reader source textuelle à convertir
-     * @param writer cible en morse
+     * @param reader         source textuelle à convertir
+     * @param writer         cible en morse
+     * @param textConversion converteur de texte
      */
-    public void textToMorse(Reader reader, Writer writer);
+    public void textToMorse(Reader reader, Writer writer, TextConversion textConversion);
 
     /**
-     * Converti du code morse en text
+     * Convertit du code morse en text
      * 
-     * @param reader source en morse
-     * @param writer cible en texte
+     * @param reader          source en morse
+     * @param writer          cible en texte
+     * @param morseConversion converteur de morse
      */
-    public void morseToText(Reader reader, Writer writer);
+    public void morseToText(Reader reader, Writer writer, MorseConversion morseConversion);
 }
