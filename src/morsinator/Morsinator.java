@@ -59,6 +59,26 @@ public class Morsinator {
         }
     }
 
+    private static FileInputStream openInputStream(String[] args) {
+        try {
+            return new FileInputStream(args[2]);
+        } catch(FileNotFoundException exception) {
+            System.err.println("Fichier d'entrée introuvable");
+            System.exit(1);
+            return null;
+        }
+    }
+
+    private static FileOutputStream openOutputStream(String[] args) {
+        try {
+            return new FileOutputStream(args[3]);
+        } catch(FileNotFoundException exception) {
+            System.err.println("Fichier de sortie introuvable");
+            System.exit(1);
+            return null;
+        }
+    }
+
     public static void main(String[] args) {
         if(args.length != 4) {
             printHelpAndExit();
@@ -69,5 +89,8 @@ public class Morsinator {
         ConversionBinaryTree conversionBinaryTree = new ConversionBinaryTree();
 
         getConversionCollections(args, conversionList, conversionBinaryTree);
+
+        FileInputStream inputStream = openInputStream(args);
+        FileOutputStream outputStream = openOutputStream(args);
     }
 }
