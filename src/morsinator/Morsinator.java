@@ -2,6 +2,7 @@ package morsinator;
 
 import morsinator.reader.*;
 import morsinator.collections.*;
+import morsinator.converter.*;
 
 import java.io.*;
 
@@ -99,5 +100,19 @@ public class Morsinator {
         getConversionCollections(args, textConversion, morseConversion);
         Reader reader = openReader(args);
         Writer writer = openWriter(args);
+
+        MorseConverter morseConverter = new TextualMorseConverter();
+
+        if(morseToText) {
+            morseConverter.morseToText(reader, writer, morseConversion);
+        } else {
+            morseConverter.textToMorse(reader, writer, textConversion);
+        }
+
+        try {
+            writer.close();
+        } catch(IOException e) {
+
+        }
     }
 }
