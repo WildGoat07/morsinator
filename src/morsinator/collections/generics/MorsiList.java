@@ -1,4 +1,4 @@
-package morsinator.collections;
+package morsinator.collections.generics;
 
 public class MorsiList<E> {
     private Node<E> first;

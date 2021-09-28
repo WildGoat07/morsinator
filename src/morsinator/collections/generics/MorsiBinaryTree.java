@@ -1,4 +1,4 @@
-package morsinator.collections;
+package morsinator.collections.generics;
 
 import java.util.function.Function;
 

@@ -3,7 +3,7 @@ package morsinator.reader;
 import java.io.*;
 import java.util.*;
 
-import morsinator.collections.MorsiBinaryTree;
+import morsinator.collections.generics.MorsiBinaryTree;
 import morsinator.collections.ConversionList;
 
 public class TextualConversionReader implements ConversionReader {

@@ -1,5 +1,7 @@
 package morsinator.collections;
 
+import morsinator.collections.generics.MorsiBinaryTree;
+
 import java.util.function.*;
 import java.util.*;
 

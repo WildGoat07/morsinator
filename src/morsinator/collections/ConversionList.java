@@ -1,6 +1,7 @@
 package morsinator.collections;
 
 import morsinator.reader.ConversionRow;
+import morsinator.collections.generics.MorsiList;
 
 public class ConversionList extends MorsiList<ConversionRow> implements TextConversion {
     public String getMorse(char letter) {
