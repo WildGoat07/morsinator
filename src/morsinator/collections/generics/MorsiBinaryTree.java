@@ -10,7 +10,7 @@ import java.util.function.Function;
  */
 public class MorsiBinaryTree<E, F> {
     /**
-     * Noeux de l'arbre binaire
+     * Noeud de l'arbre binaire
      * 
      * @param <E> type de la valeur
      */
@@ -26,7 +26,7 @@ public class MorsiBinaryTree<E, F> {
     }
 
     /**
-     * Le noeux de départ pour les branches gauche et droite
+     * Le noeud de départ pour les branches gauche et droite
      */
     private final Node<F> baseNode;
     /**
@@ -37,7 +37,7 @@ public class MorsiBinaryTree<E, F> {
     private final Function<? super E, ? extends Iterable<Boolean>> converter;
 
     public void set(E key, F value) {
-        // Le noeux actuel pour la recherche dans l'abre
+        // Le noeud actuel pour la recherche dans l'abre
         Node<F> currentNode = baseNode;
         Iterable<Boolean> route = converter.apply(key);
         // Pour chaque direction à prendre dans l'arbre...
@@ -47,14 +47,14 @@ public class MorsiBinaryTree<E, F> {
                 if (currentNode.leftNode == null)
                     // on créé la branche si elle n'existait pas
                     currentNode.leftNode = new Node<>();
-                // on change le noeux actuel pour continuer la recherche
+                // on change le noeud actuel pour continuer la recherche
                 currentNode = currentNode.leftNode;
             } else {
                 // sinon on prend la branche de droite
                 if (currentNode.rightNode == null)
                     // on créé la branche si elle n'existait pas
                     currentNode.rightNode = new Node<>();
-                // on change le noeux actuel pour continuer la recherche
+                // on change le noeud actuel pour continuer la recherche
                 currentNode = currentNode.rightNode;
             }
         }
@@ -62,7 +62,7 @@ public class MorsiBinaryTree<E, F> {
     }
 
     public boolean containsKey(E key) {
-        // Le noeux actuel pour la recherche dans l'abre
+        // Le noeud actuel pour la recherche dans l'abre
         Node<F> currentNode = baseNode;
         Iterable<Boolean> route = converter.apply(key);
         // Pour chaque direction à prendre dans l'arbre...
@@ -72,14 +72,14 @@ public class MorsiBinaryTree<E, F> {
                 if (currentNode.leftNode == null)
                     // si la branche n'existe pas, ça sert à rien de continuer
                     return false;
-                // on change le noeux actuel pour continuer la recherche
+                // on change le noeud actuel pour continuer la recherche
                 currentNode = currentNode.leftNode;
             } else {
                 // sinon on prend la branche de droite
                 if (currentNode.rightNode == null)
                     // si la branche n'existe pas, ça sert à rien de continuer
                     return false;
-                // on change le noeux actuel pour continuer la recherche
+                // on change le noeud actuel pour continuer la recherche
                 currentNode = currentNode.rightNode;
             }
         }
@@ -88,7 +88,7 @@ public class MorsiBinaryTree<E, F> {
     }
 
     public F get(E key) {
-        // Le noeux actuel pour la recherche dans l'abre
+        // Le noeud actuel pour la recherche dans l'abre
         Node<F> currentNode = baseNode;
         Iterable<Boolean> route = converter.apply(key);
         // Pour chaque direction à prendre dans l'arbre...
@@ -98,14 +98,14 @@ public class MorsiBinaryTree<E, F> {
                 if (currentNode.leftNode == null)
                     // si la branche n'existe pas, ça sert à rien de continuer
                     return null;
-                // on change le noeux actuel pour continuer la recherche
+                // on change le noeud actuel pour continuer la recherche
                 currentNode = currentNode.leftNode;
             } else {
                 // sinon on prend la branche de droite
                 if (currentNode.rightNode == null)
                     // si la branche n'existe pas, ça sert à rien de continuer
                     return null;
-                // on change le noeux actuel pour continuer la recherche
+                // on change le noeud actuel pour continuer la recherche
                 currentNode = currentNode.rightNode;
             }
         }
