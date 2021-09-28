@@ -3,7 +3,6 @@ package morsinator.collections.generics;
 public class MorsiList<E> {
     private Node<E> first;
     private Node<E> last;
-    private int count;
 
     public static class Node<E> {
         public Node(E value, Node<E> previous, Node<E> next) {
@@ -50,13 +49,11 @@ public class MorsiList<E> {
             added = last = last.next = new Node<E>(item, last, null);
         }
 
-        ++count;
         return added;
     }
 
     public void clear() {
         first = last = null;
-        count = 0;
     }
 
     public boolean contains(E item) {
@@ -77,7 +74,6 @@ public class MorsiList<E> {
         if (node.next != null)
             node.next.previous = node.previous;
 
-        --count;
         return true;
     }
 
