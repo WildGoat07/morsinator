@@ -9,6 +9,8 @@ public class ConversionList extends MorsiList<ConversionRow> implements TextConv
     }
 
     public String getMorse(char letter) {
+        letter = Character.toUpperCase(letter);
+
         for(Node<ConversionRow> node = getFirst(); node != null; node = node.getNext()) {
             ConversionRow row = node.getValue();
 
