@@ -3,8 +3,8 @@ package morsinator;
 import morsinator.reader.ConversionRow;
 import morsinator.reader.ConversionReader;
 import morsinator.reader.TextualConversionReader;
+import morsinator.collections.ConversionBinaryTree;
 import morsinator.collections.ConversionList;
-import morsinator.collections.MorsiBinaryTree;
 import morsinator.reader.ConversionReaderException;
 
 import java.io.*;
@@ -41,13 +41,13 @@ public class Morsinator {
         return null;
     }
 
-    private static void getConversionCollections(String[] args, ConversionList conversionList, MorsiBinaryTree<String, Character> morsiBinaryTree) {
+    private static void getConversionCollections(String[] args, ConversionList conversionList, ConversionBinaryTree conversionTree) {
         FileInputStream conversionFile = getConversionFileStream(args);
         ConversionReader conversionReader = new TextualConversionReader();
 
         try {
             conversionReader.fill(new InputStreamReader(new BufferedInputStream(conversionFile)), conversionList,
-                    morsiBinaryTree);
+                    conversionTree);
             conversionFile.close();
         } catch (ConversionReaderException exception) {
             System.err.println("Erreur de lecture de la table de conversion\n" + args[1] + ":" + exception.getRow()
@@ -66,8 +66,8 @@ public class Morsinator {
 
         boolean morseToText = parseOption(args);
         ConversionList conversionList = new ConversionList();
-        MorsiBinaryTree<String, Character> morsiBinaryTree = new MorsiBinaryTree<String, Character>(MorsiBinaryTree.morseConvert);
+        ConversionBinaryTree conversionBinaryTree = new ConversionBinaryTree();
 
-        getConversionCollections(args, conversionList, morsiBinaryTree);
+        getConversionCollections(args, conversionList, conversionBinaryTree);
     }
 }
