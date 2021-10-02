@@ -20,8 +20,9 @@ public class TextualConversionReader implements ConversionReader {
 
         try {
             mt.addRow(key.charAt(0), value);
-        } catch(AddException e) {
-            throw new ConversionReaderException(row, e);
+        } catch(ConversionReaderException e) {
+            e.setRow(row);
+            throw e;
         }
     }
 
