@@ -8,7 +8,7 @@ import morsinator.collections.MorseConversion;
 import morsinator.collections.TextConversion;
 
 public class TextualMorseConverter implements MorseConverter {
-    private enum Step {
+    private enum TextStep {
         WORD_PARSING, WAITING_FOR_TOKEN
     }
 
@@ -25,7 +25,7 @@ public class TextualMorseConverter implements MorseConverter {
     public void textToMorse(Reader reader, Writer writer, TextConversion textConversion) {
         int current;
         boolean firstWord = true;
-        Step step = Step.WAITING_FOR_TOKEN;
+        TextStep step = TextStep.WAITING_FOR_TOKEN;
         try {
             while ((current = reader.read()) != -1) {
                 switch (step) {
@@ -35,12 +35,12 @@ public class TextualMorseConverter implements MorseConverter {
                                 writer.write(" / ");
                             firstWord = false;
                             writer.write(textConversion.getMorse((char) current));
-                            step = Step.WORD_PARSING;
+                            step = TextStep.WORD_PARSING;
                         }
                         break;
                     case WORD_PARSING:
                         if (isCharIgnored((char) current))
-                            step = Step.WAITING_FOR_TOKEN;
+                            step = TextStep.WAITING_FOR_TOKEN;
                         else
                             writer.write(' ' + textConversion.getMorse((char) current));
                         break;
