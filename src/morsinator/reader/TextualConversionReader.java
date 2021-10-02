@@ -10,7 +10,7 @@ public class TextualConversionReader implements ConversionReader {
         try {
             return reader.read();
         } catch(IOException e) {
-            throw new ConversionReaderException("Erreur de lecture du fichier", row, e);
+            throw new ConversionReaderException("Erreur de lecture du fichier", row);
         }
     }
 

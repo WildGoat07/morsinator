@@ -3,9 +3,8 @@ package morsinator.reader;
 public class ConversionReaderException extends Exception {
     private int row;
 
-    public ConversionReaderException(int row) {
-        super();
-        this.row = row;
+    public ConversionReaderException(String message) {
+        super(message);
     }
 
     public ConversionReaderException(String message, int row) {
@@ -13,13 +12,7 @@ public class ConversionReaderException extends Exception {
         this.row = row;
     }
 
-    public ConversionReaderException(int row, Throwable cause) {
-        super(cause);
-        this.row = row;
-    }
-
-    public ConversionReaderException(String message, int row, Throwable cause) {
-        super(message, cause);
+    public void setRow(int row) {
         this.row = row;
     }
 
