@@ -27,7 +27,7 @@ public class ConversionBinaryTree extends MorsiBinaryTree<String, Character> imp
                     result.add(true);
                     break;
                 default:
-                    throw new RuntimeException("Charactère '" + current + "' invalide");
+                    return null;
             }
         }
         return result;

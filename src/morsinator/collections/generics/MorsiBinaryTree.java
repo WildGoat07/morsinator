@@ -36,10 +36,14 @@ public class MorsiBinaryTree<E, F> {
      */
     private final Function<? super E, ? extends Iterable<Boolean>> converter;
 
-    public void set(E key, F value) {
+    public boolean set(E key, F value) {
         // Le noeud actuel pour la recherche dans l'abre
         Node<F> currentNode = baseNode;
         Iterable<Boolean> route = converter.apply(key);
+
+        if(route == null)
+            return false;
+
         // Pour chaque direction à prendre dans l'arbre...
         for (Boolean state : route) {
             if (state) {
@@ -59,6 +63,7 @@ public class MorsiBinaryTree<E, F> {
             }
         }
         currentNode.value = value;
+        return true;
     }
 
     public boolean containsKey(E key) {
@@ -91,6 +96,10 @@ public class MorsiBinaryTree<E, F> {
         // Le noeud actuel pour la recherche dans l'abre
         Node<F> currentNode = baseNode;
         Iterable<Boolean> route = converter.apply(key);
+
+        if(route == null)
+            return null;
+
         // Pour chaque direction à prendre dans l'arbre...
         for (Boolean state : route) {
             if (state) {
