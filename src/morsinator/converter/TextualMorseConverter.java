@@ -54,10 +54,68 @@ public class TextualMorseConverter implements MorseConverter {
         }
     }
 
-    @Override
-    public void morseToText(Reader reader, Writer writer, MorseConversion morseConversion) {
-        // TODO Auto-generated method stub
-
+    private int readReader(Reader reader) {
+        try {
+            return reader.read();
+        } catch(IOException e) {
+            // throw new CustomException()...
+            return -1;
+        }
     }
 
+    private void writeWriter(Writer writer, char c) {
+        try {
+            writer.write(c);
+        } catch(IOException e) {
+            // throw new CustomException()...
+        }
+    }
+
+    private enum MorseStep {
+        READ_MORSE,
+        WAIT_NEXT,
+        WAIT_SPACE
+    }
+
+    @Override
+    public void morseToText(Reader reader, Writer writer, MorseConversion morseConversion) {
+        int current;
+        MorseStep step = MorseStep.READ_MORSE;
+        String morse = "";
+
+        while((current = readReader(reader)) != -1) {
+            char c = (char)current;
+
+            switch(step) {
+                case READ_MORSE:
+                    if(c == ' ') {
+                        writeWriter(writer, morseConversion.getLetter(morse));
+                        step = MorseStep.WAIT_NEXT;
+                    } else {
+                        morse += c;
+                    }
+
+                    break;
+
+                case WAIT_NEXT:
+                    if(c == '/') {
+                        writeWriter(writer, ' ');
+                        step = MorseStep.WAIT_SPACE;
+                    } else {
+                        morse = "" + c;
+                        step = MorseStep.READ_MORSE;
+                    }
+
+                    break;
+
+                case WAIT_SPACE:
+                    if(c == ' ') {
+                        morse = "";
+                        step = MorseStep.READ_MORSE;
+                    }
+
+                    break;
+            }
+        }
+    }
 }
