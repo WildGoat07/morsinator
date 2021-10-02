@@ -5,7 +5,7 @@ import morsinator.collections.generics.MorsiBinaryTree;
 import java.util.function.*;
 import java.util.*;
 
-import morsinator.reader.ConversionReaderException;
+import morsinator.MorsinatorParseException;
 
 public class ConversionBinaryTree extends MorsiBinaryTree<String, Character> implements MorseConversion {
     /**
@@ -37,12 +37,12 @@ public class ConversionBinaryTree extends MorsiBinaryTree<String, Character> imp
         super(morseConvert);
     }
 
-    public void addRow(char letter, String morse) throws ConversionReaderException {
+    public void addRow(char letter, String morse) throws MorsinatorParseException {
         if(get(morse) != null)
-            throw new ConversionReaderException("Code morse de '" + letter + "' d\u00e9j\u00e0 ajout\u00e9 sous la lettre '" + get(morse) + "'");
+            throw new MorsinatorParseException("Code morse de '" + letter + "' d\u00e9j\u00e0 ajout\u00e9 sous la lettre '" + get(morse) + "'");
 
         if(!set(morse, letter))
-            throw new ConversionReaderException("Le code \"" + morse + "\" n'est pas un code morse valide, impossible de le sauvegarder dans l'arbre");
+            throw new MorsinatorParseException("Le code \"" + morse + "\" n'est pas un code morse valide, impossible de le sauvegarder dans l'arbre");
     }
 
     public char getLetter(String morse) {

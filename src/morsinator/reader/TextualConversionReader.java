@@ -3,31 +3,32 @@ package morsinator.reader;
 import java.io.*;
 import java.util.*;
 
+import morsinator.MorsinatorParseException;
 import morsinator.collections.*;
 
 public class TextualConversionReader implements ConversionReader {
-    private int readReader(Reader reader, int row) throws ConversionReaderException {
+    private int readReader(Reader reader, int row) throws MorsinatorParseException {
         try {
             return reader.read();
         } catch(IOException e) {
-            throw new ConversionReaderException("Erreur de lecture du fichier", row);
+            throw new MorsinatorParseException("Erreur de lecture du fichier", row);
         }
     }
 
-    private void registerRow(String key, String value, TextConversion tm, MorseConversion mt, int row) throws ConversionReaderException {
+    private void registerRow(String key, String value, TextConversion tm, MorseConversion mt, int row) throws MorsinatorParseException {
         value = value.trim();
         tm.addRow(key.charAt(0), value);
 
         try {
             mt.addRow(key.charAt(0), value);
-        } catch(ConversionReaderException e) {
+        } catch(MorsinatorParseException e) {
             e.setRow(row);
             throw e;
         }
     }
 
     @Override
-    public void fill(Reader reader, TextConversion tm, MorseConversion mt) throws ConversionReaderException {
+    public void fill(Reader reader, TextConversion tm, MorseConversion mt) throws MorsinatorParseException {
         int row = 1;
         HashSet<String> addedLetters = new HashSet<>();
 
@@ -47,9 +48,9 @@ public class TextualConversionReader implements ConversionReader {
 
                     // vérifications d'intégrités
                     if(key.length() != 1)
-                        throw new ConversionReaderException("Lettre invalide", row);
+                        throw new MorsinatorParseException("Lettre invalide", row);
                     else if(addedLetters.contains(key))
-                        throw new ConversionReaderException("Lettre déjà ajoutée", row);
+                        throw new MorsinatorParseException("Lettre déjà ajoutée", row);
 
                     addedLetters.add(key);
                     readingKey = false;
@@ -72,7 +73,7 @@ public class TextualConversionReader implements ConversionReader {
         }
 
         if(readingKey && !key.trim().isEmpty())
-            throw new ConversionReaderException("Fin de fichier inattendue", row);
+            throw new MorsinatorParseException("Fin de fichier inattendue", row);
         else if(!readingKey) {
             registerRow(key, value, tm, mt, row);
         }

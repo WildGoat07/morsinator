@@ -1,13 +1,13 @@
-package morsinator.reader;
+package morsinator;
 
-public class ConversionReaderException extends Exception {
+public class MorsinatorParseException extends Exception {
     private int row;
 
-    public ConversionReaderException(String message) {
+    public MorsinatorParseException(String message) {
         super(message);
     }
 
-    public ConversionReaderException(String message, int row) {
+    public MorsinatorParseException(String message, int row) {
         super(message);
         this.row = row;
     }

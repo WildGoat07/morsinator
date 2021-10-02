@@ -46,7 +46,7 @@ public class Morsinator {
             conversionReader.fill(new InputStreamReader(new BufferedInputStream(conversionFile)), textConversion,
                     morseConversion);
             conversionFile.close();
-        } catch (ConversionReaderException exception) {
+        } catch (MorsinatorParseException exception) {
             System.err.println("Erreur de lecture de la table de conversion\n" + args[1] + ":" + exception.getRow()
                     + " : " + exception.getMessage());
             System.exit(1);

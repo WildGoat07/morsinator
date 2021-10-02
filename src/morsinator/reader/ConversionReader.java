@@ -2,6 +2,7 @@ package morsinator.reader;
 
 import java.io.*;
 
+import morsinator.MorsinatorParseException;
 import morsinator.collections.*;
 
 public interface ConversionReader {
@@ -13,5 +14,5 @@ public interface ConversionReader {
      * @param mt     arbre de conversion morse -> texte
      * @throws IOException
      */
-    public void fill(Reader reader, TextConversion tm, MorseConversion mt) throws ConversionReaderException;
+    public void fill(Reader reader, TextConversion tm, MorseConversion mt) throws MorsinatorParseException;
 }
