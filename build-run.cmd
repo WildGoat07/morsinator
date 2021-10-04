@@ -1,0 +1,1 @@
+"./compile.cmd" & "./pack.cmd" & "./run.cmd" %*

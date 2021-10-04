@@ -1,0 +1,1 @@
+e:/ProgramFiles/jdk-17/bin/jar.exe cfmv morsinator.jar ./manifest.mf -C bin .

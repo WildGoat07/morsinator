@@ -1,1 +1,1 @@
-e:/ProgramFiles/jdk-15/bin/java.exe -cp bin morsinator/Morsinator %*
+e:/ProgramFiles/jdk-17/bin/java.exe -jar morsinator.jar %*

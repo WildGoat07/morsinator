@@ -1,0 +1,14 @@
+./src/module-info.java
+./src/morsinator/Morsinator.java
+./src/morsinator/MorsinatorParseException.java
+./src/morsinator/reader/ConversionReader.java
+./src/morsinator/reader/ConversionRow.java
+./src/morsinator/reader/TextualConversionReader.java
+./src/morsinator/converter/MorseConverter.java
+./src/morsinator/converter/TextualMorseConverter.java
+./src/morsinator/collections/ConversionBinaryTree.java
+./src/morsinator/collections/ConversionList.java
+./src/morsinator/collections/MorseConversion.java
+./src/morsinator/collections/TextConversion.java
+./src/morsinator/collections/generics/MorsiBinaryTree.java
+./src/morsinator/collections/generics/MorsiList.java
