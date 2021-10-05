@@ -66,7 +66,11 @@ public class MainWindowController {
         conversionThread = new Thread(() -> {
             Reader reader = new StringReader(text);
             Writer writer = new StringWriter();
-            morseConverter.textToMorse(reader, writer, textConversion);
+            try {
+                morseConverter.textToMorse(reader, writer, textConversion);
+            } catch (MorsinatorParseException e) {
+                // TODO
+            }
             final String morse = writer.toString();
             Platform.runLater(() -> {
                 morseCodeArea.setText(morse);
