@@ -7,14 +7,6 @@ import morsinator.MorsinatorParseException;
 import morsinator.collections.*;
 
 public class TextualConversionReader implements ConversionReader {
-    private int readReader(Reader reader, int row) throws MorsinatorParseException {
-        try {
-            return reader.read();
-        } catch(IOException e) {
-            throw new MorsinatorParseException("Erreur de lecture du fichier", row);
-        }
-    }
-
     private void registerRow(String key, String value, TextConversion tm, MorseConversion mt, int row) throws MorsinatorParseException {
         value = value.trim();
         tm.addRow(key.charAt(0), value);
@@ -28,14 +20,14 @@ public class TextualConversionReader implements ConversionReader {
     }
 
     @Override
-    public void fill(Reader reader, TextConversion tm, MorseConversion mt) throws MorsinatorParseException {
+    public void fill(Reader reader, TextConversion tm, MorseConversion mt) throws MorsinatorParseException, IOException {
         int row = 1;
         HashSet<String> addedLetters = new HashSet<>();
 
         String key = "";
         String value = null;
         boolean readingKey = true; // if false, reading value
-        int currentChar = readReader(reader, row);
+        int currentChar = reader.read();
 
         while(currentChar != -1) {
             if(currentChar == '\n')
@@ -69,7 +61,7 @@ public class TextualConversionReader implements ConversionReader {
                 }
             }
 
-            currentChar = readReader(reader, row);
+            currentChar = reader.read();
         }
 
         if(readingKey && !key.trim().isEmpty())

@@ -68,13 +68,19 @@ public class Morsinator extends Application {
         try {
             conversionReader.fill(new InputStreamReader(new BufferedInputStream(conversionFile)), textConversion,
                     morseConversion);
-            conversionFile.close();
         } catch (MorsinatorParseException exception) {
             System.err.println("Erreur de lecture de la table de conversion\n" + args[1] + ":" + exception.getRow()
                     + " : " + exception.getMessage());
             System.exit(1);
         } catch (IOException exception) {
-            System.err.println("Erreur de fermeture du fichier\n" + exception.getMessage());
+            System.err.println("Erreur de lecture de la table de conversion\n" + exception.getMessage());
+            System.exit(1);
+        }
+
+        try {
+            conversionFile.close();
+        } catch(IOException e) {
+            System.err.println("Erreur de fermeture de la table de conversion");
             System.exit(1);
         }
     }

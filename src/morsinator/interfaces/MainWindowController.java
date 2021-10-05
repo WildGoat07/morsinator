@@ -93,6 +93,8 @@ public class MainWindowController {
                 morseConverter.morseToText(reader, writer, morseConversion);
             } catch (MorsinatorParseException e) {
                 // TODO
+            } catch (IOException e) {
+                // TODO
             }
             final String text = writer.toString();
             Platform.runLater(() -> {

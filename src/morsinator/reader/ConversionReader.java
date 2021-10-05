@@ -14,5 +14,5 @@ public interface ConversionReader {
      * @param mt     arbre de conversion morse -> texte
      * @throws IOException
      */
-    public void fill(Reader reader, TextConversion tm, MorseConversion mt) throws MorsinatorParseException;
+    public void fill(Reader reader, TextConversion tm, MorseConversion mt) throws MorsinatorParseException, IOException;
 }
