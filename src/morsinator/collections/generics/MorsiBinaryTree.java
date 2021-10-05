@@ -1,6 +1,7 @@
 package morsinator.collections.generics;
 
 import java.util.function.Function;
+import java.util.NoSuchElementException;
 
 /**
  * Arbre binaire
@@ -36,13 +37,13 @@ public class MorsiBinaryTree<E, F> {
      */
     private final Function<? super E, ? extends Iterable<Boolean>> converter;
 
-    public boolean set(E key, F value) {
+    public void set(E key, F value) {
         // Le noeud actuel pour la recherche dans l'abre
         Node<F> currentNode = baseNode;
         Iterable<Boolean> route = converter.apply(key);
 
         if(route == null)
-            return false;
+            throw new NoSuchElementException();
 
         // Pour chaque direction à prendre dans l'arbre...
         for (Boolean state : route) {
@@ -63,7 +64,6 @@ public class MorsiBinaryTree<E, F> {
             }
         }
         currentNode.value = value;
-        return true;
     }
 
     public boolean containsKey(E key) {
@@ -98,7 +98,7 @@ public class MorsiBinaryTree<E, F> {
         Iterable<Boolean> route = converter.apply(key);
 
         if(route == null)
-            return null;
+            throw new NoSuchElementException();
 
         // Pour chaque direction à prendre dans l'arbre...
         for (Boolean state : route) {
@@ -106,14 +106,14 @@ public class MorsiBinaryTree<E, F> {
                 // si il faut prendre la branche de gauche
                 if (currentNode.leftNode == null)
                     // si la branche n'existe pas, ça sert à rien de continuer
-                    return null;
+                    throw new NoSuchElementException();
                 // on change le noeud actuel pour continuer la recherche
                 currentNode = currentNode.leftNode;
             } else {
                 // sinon on prend la branche de droite
                 if (currentNode.rightNode == null)
                     // si la branche n'existe pas, ça sert à rien de continuer
-                    return null;
+                    throw new NoSuchElementException();
                 // on change le noeud actuel pour continuer la recherche
                 currentNode = currentNode.rightNode;
             }
