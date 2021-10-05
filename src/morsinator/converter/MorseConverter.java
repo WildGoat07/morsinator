@@ -14,7 +14,7 @@ public interface MorseConverter {
      * @param writer         cible en morse
      * @param textConversion converteur de texte
      */
-    public void textToMorse(Reader reader, Writer writer, TextConversion textConversion);
+    public void textToMorse(Reader reader, Writer writer, TextConversion textConversion) throws MorsinatorParseException;
 
     /**
      * Convertit du code morse en text

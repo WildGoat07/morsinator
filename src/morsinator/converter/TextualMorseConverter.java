@@ -23,35 +23,32 @@ public class TextualMorseConverter implements MorseConverter {
     }
 
     @Override
-    public void textToMorse(Reader reader, Writer writer, TextConversion textConversion) {
+    public void textToMorse(Reader reader, Writer writer, TextConversion textConversion) throws MorsinatorParseException {
         int current;
         boolean firstWord = true;
         TextStep step = TextStep.WAITING_FOR_TOKEN;
-        try {
-            while ((current = reader.read()) != -1) {
-                switch (step) {
-                    case WAITING_FOR_TOKEN:
-                        if (!isCharIgnored((char) current)) {
-                            if (!firstWord)
-                                writer.write(" / ");
-                            firstWord = false;
-                            writer.write(textConversion.getMorse((char) current));
-                            step = TextStep.WORD_PARSING;
-                        }
-                        break;
-                    case WORD_PARSING:
-                        if (isCharIgnored((char) current))
-                            step = TextStep.WAITING_FOR_TOKEN;
-                        else
-                            writer.write(' ' + textConversion.getMorse((char) current));
-                        break;
-                    default:
-                        break;
 
-                }
+        while ((current = readReader(reader)) != -1) {
+            switch (step) {
+                case WAITING_FOR_TOKEN:
+                    if (!isCharIgnored((char) current)) {
+                        if (!firstWord)
+                            writeWriter(writer, " / ");
+                        firstWord = false;
+                        writeWriter(writer, textConversion.getMorse((char) current));
+                        step = TextStep.WORD_PARSING;
+                    }
+                    break;
+                case WORD_PARSING:
+                    if (isCharIgnored((char) current))
+                        step = TextStep.WAITING_FOR_TOKEN;
+                    else
+                        writeWriter(writer, ' ' + textConversion.getMorse((char) current));
+                    break;
+                default:
+                    break;
+
             }
-        } catch (IOException e) {
-
         }
     }
 
@@ -66,6 +63,14 @@ public class TextualMorseConverter implements MorseConverter {
     private void writeWriter(Writer writer, char c) throws MorsinatorParseException {
         try {
             writer.write(c);
+        } catch(IOException e) {
+            throw new MorsinatorParseException("Erreur d'écriture dans le flux");
+        }
+    }
+
+    private void writeWriter(Writer writer, String s) throws MorsinatorParseException {
+        try {
+            writer.write(s);
         } catch(IOException e) {
             throw new MorsinatorParseException("Erreur d'écriture dans le flux");
         }
