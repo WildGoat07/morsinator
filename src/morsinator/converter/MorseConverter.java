@@ -2,6 +2,7 @@ package morsinator.converter;
 
 import java.io.*;
 
+import morsinator.MorsinatorParseException;
 import morsinator.collections.MorseConversion;
 import morsinator.collections.TextConversion;
 
@@ -22,5 +23,5 @@ public interface MorseConverter {
      * @param writer          cible en texte
      * @param morseConversion converteur de morse
      */
-    public void morseToText(Reader reader, Writer writer, MorseConversion morseConversion);
+    public void morseToText(Reader reader, Writer writer, MorseConversion morseConversion) throws MorsinatorParseException;
 }
