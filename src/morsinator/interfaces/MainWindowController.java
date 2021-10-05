@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -171,18 +172,54 @@ public class MainWindowController {
     }
 
     public void saveText() {
-
+        if (lastText == null)
+            saveTextAs();
+        else {
+            try {
+                Writer writer = new FileWriter(lastText);
+                writer.append(textCodeArea.getText());
+                writer.close();
+            } catch (IOException e) {
+                // TODO
+            }
+        }
     }
 
     public void saveTextAs() {
-
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Sauvegarder du texte");
+        fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Fichiers texte", "*.txt"),
+                new ExtensionFilter("Tous les fichiers", "*.*"));
+        File file = fileChooser.showSaveDialog(stage);
+        if (file != null) {
+            lastText = file;
+            saveText();
+        }
     }
 
     public void saveMorse() {
-
+        if (lastMorse == null)
+            saveMorseAs();
+        else {
+            try {
+                Writer writer = new FileWriter(lastMorse);
+                writer.append(morseCodeArea.getText());
+                writer.close();
+            } catch (IOException e) {
+                // TODO
+            }
+        }
     }
 
     public void saveMorseAs() {
-
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Sauvegarder du morse");
+        fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Fichiers texte", "*.txt"),
+                new ExtensionFilter("Tous les fichiers", "*.*"));
+        File file = fileChooser.showSaveDialog(stage);
+        if (file != null) {
+            lastMorse = file;
+            saveMorse();
+        }
     }
 }
