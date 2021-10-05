@@ -135,12 +135,19 @@ public class Morsinator extends Application {
             } catch(MorsinatorParseException e) {
                 System.err.println("Erreur de traduction du fichier morse\n" + args[2] + ":" + e.getRow() + " : " + e.getMessage());
                 System.exit(1);
+            } catch(IOException e) {
+                System.err.println("Erreur d'entrée-sortie à la conversion");
+                System.exit(1);
             }
         } else {
             try {
                 morseConverter.textToMorse(reader, writer, textConversion);
             } catch(MorsinatorParseException e) {
                 System.err.println("Erreur de traduction du fichier texte\n" + args[2] + ":" + e.getRow() + " : " + e.getMessage());
+                System.exit(1);
+            } catch(IOException e) {
+                System.err.println("Erreur d'entrée-sortie à la conversion");
+                System.exit(1);
             }
         }
 
