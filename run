@@ -1,1 +1,1 @@
-java -cp bin morsinator/Morsinator $@
+java -cp bin --module-path ~/etudes/jfx/lib --add-modules javafx.controls,javafx.fxml morsinator.Morsinator $@
