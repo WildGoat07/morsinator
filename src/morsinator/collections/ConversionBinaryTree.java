@@ -49,11 +49,11 @@ public class ConversionBinaryTree extends MorsiBinaryTree<String, Character> imp
         }
     }
 
-    public Character getLetter(String morse) {
+    public char getLetter(String morse) throws MorsinatorParseException {
         try {
             return get(morse);
         } catch(NoSuchElementException | IllegalArgumentException e) {
-            return null;
+            throw new MorsinatorParseException("Le code morse " + morse + " n'a pas de traduction dans la table fournie");
         }
     }
 }
