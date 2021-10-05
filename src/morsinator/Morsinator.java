@@ -117,7 +117,8 @@ public class Morsinator {
         try {
             writer.close();
         } catch(IOException e) {
-
+            System.err.println("Erreur à la fermeture du flux d'écriture dans le fichier de sortie");
+            System.exit(1);
         }
     }
 }
