@@ -148,7 +148,7 @@ public class MainWindowController {
 
     public void importMorse() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Importer du texte");
+        fileChooser.setTitle("Importer du morse");
         fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Fichiers texte", "*.txt"),
                 new ExtensionFilter("Tous les fichiers", "*.*"));
         File file = fileChooser.showOpenDialog(stage);
