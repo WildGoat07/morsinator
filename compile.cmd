@@ -1,1 +1,1 @@
-e:/ProgramFiles/jdk-17/bin/javac.exe -d bin @sources.txt
+e:/ProgramFiles/jdk-17/bin/javac.exe --module-path e:/ProgramFiles/javafx-sdk-17.0.0.1/lib --add-modules javafx.controls,javafx.fxml -d bin @sources.txt
