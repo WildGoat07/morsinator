@@ -68,13 +68,19 @@ public class Morsinator extends Application {
         try {
             conversionReader.fill(new InputStreamReader(new BufferedInputStream(conversionFile)), textConversion,
                     morseConversion);
-            conversionFile.close();
         } catch (MorsinatorParseException exception) {
             System.err.println("Erreur de lecture de la table de conversion\n" + args[1] + ":" + exception.getRow()
                     + " : " + exception.getMessage());
             System.exit(1);
         } catch (IOException exception) {
-            System.err.println("Erreur de fermeture du fichier\n" + exception.getMessage());
+            System.err.println("Erreur de lecture de la table de conversion\n" + exception.getMessage());
+            System.exit(1);
+        }
+
+        try {
+            conversionFile.close();
+        } catch(IOException e) {
+            System.err.println("Erreur de fermeture de la table de conversion");
             System.exit(1);
         }
     }
@@ -135,12 +141,19 @@ public class Morsinator extends Application {
             } catch(MorsinatorParseException e) {
                 System.err.println("Erreur de traduction du fichier morse\n" + args[2] + ":" + e.getRow() + " : " + e.getMessage());
                 System.exit(1);
+            } catch(IOException e) {
+                System.err.println("Erreur d'entrée-sortie à la conversion");
+                System.exit(1);
             }
         } else {
             try {
                 morseConverter.textToMorse(reader, writer, textConversion);
             } catch(MorsinatorParseException e) {
                 System.err.println("Erreur de traduction du fichier texte\n" + args[2] + ":" + e.getRow() + " : " + e.getMessage());
+                System.exit(1);
+            } catch(IOException e) {
+                System.err.println("Erreur d'entrée-sortie à la conversion");
+                System.exit(1);
             }
         }
 
