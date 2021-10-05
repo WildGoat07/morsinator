@@ -66,6 +66,7 @@ public class MorsiBinaryTree<E, F> {
             }
         }
         currentNode.value = value;
+        currentNode.hasValue = true;
     }
 
     public boolean containsKey(E key) {
