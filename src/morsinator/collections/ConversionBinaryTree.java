@@ -39,19 +39,21 @@ public class ConversionBinaryTree extends MorsiBinaryTree<String, Character> imp
 
     public void addRow(char letter, String morse) throws MorsinatorParseException {
         try {
-            get(morse);
-        } catch(NoSuchElementException e) {
-            throw new MorsinatorParseException("Code morse de '" + letter + "' déjà ajouté sous la lettre '" + get(morse) + "'");
-        }
-
-        try {
-            set(morse, letter);
-        } catch(NoSuchElementException e) {
+            if(containsKey(morse)) {
+                throw new MorsinatorParseException("Code morse de '" + letter + "' déjà ajouté sous la lettre '" + get(morse) + "'");
+            } else {
+                set(morse, letter);
+            }
+        } catch(IllegalArgumentException e) {
             throw new MorsinatorParseException("Le code \"" + morse + "\" n'est pas un code morse valide, impossible de le sauvegarder dans l'arbre");
         }
     }
 
-    public char getLetter(String morse) {
-        return get(morse);
+    public Character getLetter(String morse) {
+        try {
+            return get(morse);
+        } catch(NoSuchElementException | IllegalArgumentException e) {
+            return null;
+        }
     }
 }

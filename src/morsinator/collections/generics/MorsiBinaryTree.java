@@ -2,6 +2,7 @@ package morsinator.collections.generics;
 
 import java.util.function.Function;
 import java.util.NoSuchElementException;
+import java.lang.IllegalArgumentException;
 
 /**
  * Arbre binaire
@@ -43,7 +44,7 @@ public class MorsiBinaryTree<E, F> {
         Iterable<Boolean> route = converter.apply(key);
 
         if(route == null)
-            throw new NoSuchElementException();
+            throw new IllegalArgumentException();
 
         // Pour chaque direction à prendre dans l'arbre...
         for (Boolean state : route) {
@@ -70,6 +71,10 @@ public class MorsiBinaryTree<E, F> {
         // Le noeud actuel pour la recherche dans l'abre
         Node<F> currentNode = baseNode;
         Iterable<Boolean> route = converter.apply(key);
+
+        if(route == null)
+            throw new IllegalArgumentException();
+
         // Pour chaque direction à prendre dans l'arbre...
         for (Boolean state : route) {
             if (state) {
@@ -98,7 +103,7 @@ public class MorsiBinaryTree<E, F> {
         Iterable<Boolean> route = converter.apply(key);
 
         if(route == null)
-            throw new NoSuchElementException();
+            throw new IllegalArgumentException();
 
         // Pour chaque direction à prendre dans l'arbre...
         for (Boolean state : route) {
