@@ -12,3 +12,4 @@
 ./src/morsinator/collections/TextConversion.java
 ./src/morsinator/collections/generics/MorsiBinaryTree.java
 ./src/morsinator/collections/generics/MorsiList.java
+./src/morsinator/interfaces/MainWindowController.java

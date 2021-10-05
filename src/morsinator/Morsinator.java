@@ -3,10 +3,33 @@ package morsinator;
 import morsinator.reader.*;
 import morsinator.collections.*;
 import morsinator.converter.*;
+import morsinator.interfaces.MainWindowController;
 
 import java.io.*;
 
-public class Morsinator {
+import javafx.application.Application;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.Parent;
+import javafx.fxml.FXMLLoader;
+public class Morsinator extends Application {
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("morsinator/interfaces/MainWindow.fxml"));
+        fxmlLoader.setController(new MainWindowController(stage));
+        Parent root = fxmlLoader.load();
+        Scene scene = new Scene(root, 600, 500);
+        
+        stage.setTitle("Morsinator");
+        stage.setMinHeight(400);
+        stage.setMinWidth(500);
+        stage.setScene(scene);
+        //TODO add window icon
+        //stage.getIcons().add(new Image("..."));
+        stage.show();
+    }
+
     private static void printHelpAndExit() {
             System.err.println("morsinator <option-conversion> <table-conversion> <fichier-entrée> <fichier-sortie>\n\n" +
                                "Options :\n" +
@@ -89,7 +112,10 @@ public class Morsinator {
     }
 
     public static void main(String[] args) {
-        if(args.length != 4) {
+        if (args.length == 0) {
+            launch();
+            return;
+        } else if (args.length != 4) {
             printHelpAndExit();
         }
 
