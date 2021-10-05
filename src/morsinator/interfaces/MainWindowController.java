@@ -59,7 +59,7 @@ public class MainWindowController {
         initConversionTable();
     }
 
-    private void textToMorse() {
+    public void textToMorse() {
         if (conversionThread != null)
             conversionThread.interrupt();
         final String text = textCodeArea.getText();
@@ -80,7 +80,7 @@ public class MainWindowController {
         conversionThread.start();
     }
 
-    private void morseToText() {
+    public void morseToText() {
         if (conversionThread != null)
             conversionThread.interrupt();
         final String morse = morseCodeArea.getText();

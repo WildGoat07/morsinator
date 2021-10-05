@@ -31,7 +31,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </BorderPane.margin>
                <center>
-                  <TextArea fx:id="textCodeArea" prefHeight="200.0" prefWidth="200.0" wrapText="true" />
+                  <TextArea fx:id="textCodeArea" onKeyTyped="#textToMorse" wrapText="true" />
                </center>
                <top>
                   <HBox alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
@@ -109,7 +109,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </BorderPane.margin>
                <center>
-                  <TextArea fx:id="morseCodeArea" prefHeight="200.0" prefWidth="200.0" wrapText="true" />
+                  <TextArea fx:id="morseCodeArea" onKeyTyped="#morseToText" wrapText="true" />
                </center>
                <top>
                   <HBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER">
