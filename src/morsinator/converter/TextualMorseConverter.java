@@ -9,50 +9,16 @@ import morsinator.collections.MorseConversion;
 import morsinator.collections.TextConversion;
 
 public class TextualMorseConverter implements MorseConverter {
-    private enum TextStep {
-        WORD_PARSING, WAITING_FOR_TOKEN
-    }
-
     private static final char[] ignoredChars = new char[] { '\n', '\r', ' ' };
 
-    private static boolean isCharIgnored(char toTest) {
-        for (int i = 0; i < ignoredChars.length; ++i)
-            if (ignoredChars[i] == toTest)
-                return true;
-        return false;
+    private enum MorseStep {
+        READ_MORSE,
+        WAIT_NEXT,
+        WAIT_SPACE
     }
 
-    @Override
-    public void textToMorse(Reader reader, Writer writer, TextConversion textConversion) {
-        int current;
-        boolean firstWord = true;
-        TextStep step = TextStep.WAITING_FOR_TOKEN;
-        try {
-            while ((current = reader.read()) != -1) {
-                switch (step) {
-                    case WAITING_FOR_TOKEN:
-                        if (!isCharIgnored((char) current)) {
-                            if (!firstWord)
-                                writer.write(" / ");
-                            firstWord = false;
-                            writer.write(textConversion.getMorse((char) current));
-                            step = TextStep.WORD_PARSING;
-                        }
-                        break;
-                    case WORD_PARSING:
-                        if (isCharIgnored((char) current))
-                            step = TextStep.WAITING_FOR_TOKEN;
-                        else
-                            writer.write(' ' + textConversion.getMorse((char) current));
-                        break;
-                    default:
-                        break;
-
-                }
-            }
-        } catch (IOException e) {
-
-        }
+    private enum TextStep {
+        WORD_PARSING, WAITING_FOR_TOKEN
     }
 
     private int readReader(Reader reader) throws MorsinatorParseException {
@@ -71,10 +37,49 @@ public class TextualMorseConverter implements MorseConverter {
         }
     }
 
-    private enum MorseStep {
-        READ_MORSE,
-        WAIT_NEXT,
-        WAIT_SPACE
+    private void writeWriter(Writer writer, String s) throws MorsinatorParseException {
+        try {
+            writer.write(s);
+        } catch(IOException e) {
+            throw new MorsinatorParseException("Erreur d'écriture dans le flux");
+        }
+    }
+
+    private static boolean isCharIgnored(char toTest) {
+        for (int i = 0; i < ignoredChars.length; ++i)
+            if (ignoredChars[i] == toTest)
+                return true;
+        return false;
+    }
+
+    @Override
+    public void textToMorse(Reader reader, Writer writer, TextConversion textConversion) throws MorsinatorParseException {
+        int current;
+        boolean firstWord = true;
+        TextStep step = TextStep.WAITING_FOR_TOKEN;
+
+        while ((current = readReader(reader)) != -1) {
+            switch (step) {
+                case WAITING_FOR_TOKEN:
+                    if (!isCharIgnored((char) current)) {
+                        if (!firstWord)
+                            writeWriter(writer, " / ");
+                        firstWord = false;
+                        writeWriter(writer, textConversion.getMorse((char) current));
+                        step = TextStep.WORD_PARSING;
+                    }
+                    break;
+                case WORD_PARSING:
+                    if (isCharIgnored((char) current))
+                        step = TextStep.WAITING_FOR_TOKEN;
+                    else
+                        writeWriter(writer, ' ' + textConversion.getMorse((char) current));
+                    break;
+                default:
+                    break;
+
+            }
+        }
     }
 
     @Override

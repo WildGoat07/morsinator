@@ -137,13 +137,18 @@ public class Morsinator extends Application {
                 System.exit(1);
             }
         } else {
-            morseConverter.textToMorse(reader, writer, textConversion);
+            try {
+                morseConverter.textToMorse(reader, writer, textConversion);
+            } catch(MorsinatorParseException e) {
+                System.err.println("Erreur de traduction du fichier texte\n" + args[2] + ":" + e.getRow() + " : " + e.getMessage());
+            }
         }
 
         try {
             writer.close();
         } catch(IOException e) {
-
+            System.err.println("Erreur à la fermeture du flux d'écriture dans le fichier de sortie");
+            System.exit(1);
         }
     }
 }

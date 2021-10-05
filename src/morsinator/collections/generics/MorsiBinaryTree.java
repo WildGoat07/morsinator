@@ -1,6 +1,8 @@
 package morsinator.collections.generics;
 
 import java.util.function.Function;
+import java.util.NoSuchElementException;
+import java.lang.IllegalArgumentException;
 
 /**
  * Arbre binaire
@@ -18,6 +20,7 @@ public class MorsiBinaryTree<E, F> {
         public Node<E> leftNode;
         public Node<E> rightNode;
         public E value;
+        public boolean hasValue;
     }
 
     public MorsiBinaryTree(Function<? super E, ? extends Iterable<Boolean>> converter) {
@@ -36,13 +39,13 @@ public class MorsiBinaryTree<E, F> {
      */
     private final Function<? super E, ? extends Iterable<Boolean>> converter;
 
-    public boolean set(E key, F value) {
+    public void set(E key, F value) {
         // Le noeud actuel pour la recherche dans l'abre
         Node<F> currentNode = baseNode;
         Iterable<Boolean> route = converter.apply(key);
 
         if(route == null)
-            return false;
+            throw new IllegalArgumentException();
 
         // Pour chaque direction à prendre dans l'arbre...
         for (Boolean state : route) {
@@ -63,13 +66,17 @@ public class MorsiBinaryTree<E, F> {
             }
         }
         currentNode.value = value;
-        return true;
+        currentNode.hasValue = true;
     }
 
     public boolean containsKey(E key) {
         // Le noeud actuel pour la recherche dans l'abre
         Node<F> currentNode = baseNode;
         Iterable<Boolean> route = converter.apply(key);
+
+        if(route == null)
+            throw new IllegalArgumentException();
+
         // Pour chaque direction à prendre dans l'arbre...
         for (Boolean state : route) {
             if (state) {
@@ -89,7 +96,7 @@ public class MorsiBinaryTree<E, F> {
             }
         }
         // on est arrivés au bout, c'est que la valeur existe
-        return true;
+        return currentNode.hasValue;
     }
 
     public F get(E key) {
@@ -98,7 +105,7 @@ public class MorsiBinaryTree<E, F> {
         Iterable<Boolean> route = converter.apply(key);
 
         if(route == null)
-            return null;
+            throw new IllegalArgumentException();
 
         // Pour chaque direction à prendre dans l'arbre...
         for (Boolean state : route) {
@@ -106,18 +113,23 @@ public class MorsiBinaryTree<E, F> {
                 // si il faut prendre la branche de gauche
                 if (currentNode.leftNode == null)
                     // si la branche n'existe pas, ça sert à rien de continuer
-                    return null;
+                    throw new NoSuchElementException();
                 // on change le noeud actuel pour continuer la recherche
                 currentNode = currentNode.leftNode;
             } else {
                 // sinon on prend la branche de droite
                 if (currentNode.rightNode == null)
                     // si la branche n'existe pas, ça sert à rien de continuer
-                    return null;
+                    throw new NoSuchElementException();
                 // on change le noeud actuel pour continuer la recherche
                 currentNode = currentNode.rightNode;
             }
         }
-        return currentNode.value;
+
+        if(currentNode.hasValue) {
+            return currentNode.value;
+        } else {
+            throw new NoSuchElementException();
+        }
     }
 }
