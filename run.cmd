@@ -1,1 +1,1 @@
-e:/ProgramFiles/jdk-17/bin/java.exe --module-path e:/ProgramFiles/javafx-sdk-17.0.0.1/lib --add-modules javafx.controls,javafx.fxml -jar morsinator.jar %*
+d:/ProgramFiles/jdk-17/bin/java.exe --module-path d:/ProgramFiles/javafx-sdk-17.0.0.1/lib --add-modules javafx.controls,javafx.fxml -jar morsinator.jar %*
