@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 
+import morsinator.MorsinatorParseException;
 import morsinator.collections.MorseConversion;
 import morsinator.collections.TextConversion;
 
@@ -54,20 +55,19 @@ public class TextualMorseConverter implements MorseConverter {
         }
     }
 
-    private int readReader(Reader reader) {
+    private int readReader(Reader reader) throws MorsinatorParseException {
         try {
             return reader.read();
         } catch(IOException e) {
-            // throw new CustomException()...
-            return -1;
+            throw new MorsinatorParseException("Erreur de lecture du flux");
         }
     }
 
-    private void writeWriter(Writer writer, char c) {
+    private void writeWriter(Writer writer, char c) throws MorsinatorParseException {
         try {
             writer.write(c);
         } catch(IOException e) {
-            // throw new CustomException()...
+            throw new MorsinatorParseException("Erreur d'écriture dans le flux");
         }
     }
 
@@ -78,7 +78,7 @@ public class TextualMorseConverter implements MorseConverter {
     }
 
     @Override
-    public void morseToText(Reader reader, Writer writer, MorseConversion morseConversion) {
+    public void morseToText(Reader reader, Writer writer, MorseConversion morseConversion) throws MorsinatorParseException {
         int current;
         MorseStep step = MorseStep.READ_MORSE;
         String morse = "";

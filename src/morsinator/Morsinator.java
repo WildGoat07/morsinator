@@ -104,7 +104,12 @@ public class Morsinator {
         MorseConverter morseConverter = new TextualMorseConverter();
 
         if(morseToText) {
-            morseConverter.morseToText(reader, writer, morseConversion);
+            try {
+                morseConverter.morseToText(reader, writer, morseConversion);
+            } catch(MorsinatorParseException e) {
+                System.err.println("Erreur de traduction du fichier morse\n" + args[2] + ":" + e.getRow() + " : " + e.getMessage());
+                System.exit(1);
+            }
         } else {
             morseConverter.textToMorse(reader, writer, textConversion);
         }
