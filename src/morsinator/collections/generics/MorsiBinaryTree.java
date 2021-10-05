@@ -20,6 +20,7 @@ public class MorsiBinaryTree<E, F> {
         public Node<E> leftNode;
         public Node<E> rightNode;
         public E value;
+        public boolean hasValue;
     }
 
     public MorsiBinaryTree(Function<? super E, ? extends Iterable<Boolean>> converter) {
@@ -94,7 +95,7 @@ public class MorsiBinaryTree<E, F> {
             }
         }
         // on est arrivés au bout, c'est que la valeur existe
-        return true;
+        return currentNode.hasValue;
     }
 
     public F get(E key) {
@@ -123,6 +124,11 @@ public class MorsiBinaryTree<E, F> {
                 currentNode = currentNode.rightNode;
             }
         }
-        return currentNode.value;
+
+        if(currentNode.hasValue) {
+            return currentNode.value;
+        } else {
+            throw new NoSuchElementException();
+        }
     }
 }
