@@ -7,6 +7,7 @@ import java.io.Writer;
 import morsinator.MorsinatorParseException;
 import morsinator.collections.MorseConversion;
 import morsinator.collections.TextConversion;
+import morsinator.reader.ReaderRowCol;
 
 public class TextualMorseConverter implements MorseConverter {
     private static final char[] ignoredChars = new char[] { '\n', '\r', ' ' };
@@ -30,26 +31,48 @@ public class TextualMorseConverter implements MorseConverter {
 
     @Override
     public void textToMorse(Reader reader, Writer writer, TextConversion textConversion) throws MorsinatorParseException, IOException {
+        ReaderRowCol readerRc = new ReaderRowCol(reader);
         int current;
         boolean firstWord = true;
         TextStep step = TextStep.WAITING_FOR_TOKEN;
 
-        while ((current = reader.read()) != -1) {
+        while ((current = readerRc.read()) != -1) {
             switch (step) {
                 case WAITING_FOR_TOKEN:
                     if (!isCharIgnored((char) current)) {
                         if (!firstWord)
                             writer.write(" / ");
                         firstWord = false;
-                        writer.write(textConversion.getMorse((char) current));
+
+                        String morse;
+
+                        try {
+                            morse = textConversion.getMorse((char) current);
+                        } catch(MorsinatorParseException e) {
+                            e.setRow(readerRc.getRow());
+                            throw e;
+                        }
+
+                        writer.write(morse);
                         step = TextStep.WORD_PARSING;
                     }
                     break;
                 case WORD_PARSING:
                     if (isCharIgnored((char) current))
                         step = TextStep.WAITING_FOR_TOKEN;
-                    else
-                        writer.write(' ' + textConversion.getMorse((char) current));
+                    else {
+                        String morse = null;
+
+                        try {
+                            morse = textConversion.getMorse((char) current);
+                        } catch(MorsinatorParseException e) {
+                            e.setRow(readerRc.getRow());
+                            throw e;
+                        }
+
+                        writer.write(' ' + morse);
+                    }
+
                     break;
                 default:
                     break;
@@ -60,17 +83,27 @@ public class TextualMorseConverter implements MorseConverter {
 
     @Override
     public void morseToText(Reader reader, Writer writer, MorseConversion morseConversion) throws MorsinatorParseException, IOException {
+        ReaderRowCol readerRc = new ReaderRowCol(reader);
         int current;
         MorseStep step = MorseStep.READ_MORSE;
         String morse = "";
 
-        while((current = reader.read()) != -1) {
+        while((current = readerRc.read()) != -1) {
             char c = (char)current;
 
             switch(step) {
                 case READ_MORSE:
                     if(c == ' ') {
-                        writer.write(morseConversion.getLetter(morse));
+                        char letter;
+
+                        try {
+                            letter = morseConversion.getLetter(morse);
+                        } catch(MorsinatorParseException e) {
+                            e.setRow(readerRc.getRow());
+                            throw e;
+                        }
+
+                        writer.write(letter);
                         step = MorseStep.WAIT_NEXT;
                     } else {
                         morse += c;
