@@ -11,6 +11,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.Parent;
+import javafx.scene.image.Image;
 import javafx.fxml.FXMLLoader;
 public class Morsinator extends Application {
 
@@ -25,8 +26,7 @@ public class Morsinator extends Application {
         stage.setMinHeight(400);
         stage.setMinWidth(500);
         stage.setScene(scene);
-        //TODO add window icon
-        //stage.getIcons().add(new Image("..."));
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResource("assets/icons/icon.png").toString()));
         stage.show();
     }
 
