@@ -140,23 +140,28 @@ public class MainWindowController {
     }
 
     private void initConversionTable() {
-        InputStream conversionFile = null;
         try {
-            conversionFile = new FileInputStream("./conversions.txt");
-        } catch (FileNotFoundException e) {
-            // TODO fichier introuvable
-            System.exit(1);
-        }
+            InputStream conversionFile = new FileInputStream("./conversions.txt");
             ConversionReader conversionReader = new TextualConversionReader();
 
-        try {
             conversionReader.fill(new InputStreamReader(new BufferedInputStream(conversionFile)), textConversion,
                     morseConversion);
             conversionFile.close();
-        } catch (MorsinatorParseException exception) {
-            // TODO erreur de fichier
-            System.exit(1);
-        } catch (IOException exception) {
+        } catch (FileNotFoundException e) {
+            Alert dialog = new Alert(AlertType.ERROR);
+            dialog.setTitle("Erreur de lecture de la table de conversion");
+            dialog.setContentText("Fichier de table de conversion 'conversions.txt' introuvable.");
+            dialog.showAndWait();
+        } catch (MorsinatorParseException e) {
+            Alert dialog = new Alert(AlertType.ERROR);
+            dialog.setTitle("Erreur de lecture de la table de conversion");
+            dialog.setContentText("Ligne " + e.getRow() + " " + e.getMessage());
+            dialog.showAndWait();
+        } catch (IOException e) {
+            Alert dialog = new Alert(AlertType.ERROR);
+            dialog.setTitle("Erreur de lecture de la table de conversion");
+            dialog.setContentText(e.getMessage());
+            dialog.showAndWait();
         }
     }
 
@@ -178,8 +183,15 @@ public class MainWindowController {
                 lastText = file;
                 textToMorse();
             } catch (FileNotFoundException e) {
-                // TODO fichier introuvable
+                Alert dialog = new Alert(AlertType.ERROR);
+                dialog.setTitle("Erreur de d'import de fichier");
+                dialog.setContentText("Fichier introuvable.");
+                dialog.showAndWait();
             } catch (IOException e) {
+                Alert dialog = new Alert(AlertType.ERROR);
+                dialog.setTitle("Erreur de d'import de fichier");
+                dialog.setContentText(e.getMessage());
+                dialog.showAndWait();
             }
         }
     }
@@ -202,8 +214,15 @@ public class MainWindowController {
                 lastMorse = file;
                 morseToText();
             } catch (FileNotFoundException e) {
-                // TODO fichier introuvable
+                Alert dialog = new Alert(AlertType.ERROR);
+                dialog.setTitle("Erreur de d'import de fichier");
+                dialog.setContentText("Fichier introuvable.");
+                dialog.showAndWait();
             } catch (IOException e) {
+                Alert dialog = new Alert(AlertType.ERROR);
+                dialog.setTitle("Erreur de d'import de fichier");
+                dialog.setContentText(e.getMessage());
+                dialog.showAndWait();
             }
         }
     }
@@ -217,7 +236,10 @@ public class MainWindowController {
                 writer.append(textCodeArea.getText());
                 writer.close();
             } catch (IOException e) {
-                // TODO
+                Alert dialog = new Alert(AlertType.ERROR);
+                dialog.setTitle("Erreur de d'export de fichier");
+                dialog.setContentText(e.getMessage());
+                dialog.showAndWait();
             }
         }
     }
@@ -243,7 +265,10 @@ public class MainWindowController {
                 writer.append(morseCodeArea.getText());
                 writer.close();
             } catch (IOException e) {
-                // TODO
+                Alert dialog = new Alert(AlertType.ERROR);
+                dialog.setTitle("Erreur de d'export de fichier");
+                dialog.setContentText(e.getMessage());
+                dialog.showAndWait();
             }
         }
     }
