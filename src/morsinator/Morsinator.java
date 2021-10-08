@@ -13,15 +13,17 @@ import javafx.scene.Scene;
 import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.fxml.FXMLLoader;
+
 public class Morsinator extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("morsinator/interfaces/MainWindow.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(
+                getClass().getClassLoader().getResource("morsinator/interfaces/MainWindow.fxml"));
         fxmlLoader.setController(new MainWindowController(stage));
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root, 600, 500);
-        
+
         stage.setTitle("Morsinator");
         stage.setMinHeight(400);
         stage.setMinWidth(500);
@@ -31,17 +33,16 @@ public class Morsinator extends Application {
     }
 
     private static void printHelpAndExit() {
-            System.err.println("morsinator <option-conversion> <table-conversion> <fichier-entrée> <fichier-sortie>\n\n" +
-                               "Options :\n" +
-                               "    -tm  --texte-morse    Convertit de texte vers morse\n" +
-                               "    -mt  --morse-texte    Convertit de morse vers texte");
-            System.exit(1);
+        System.err.println("morsinator <option-conversion> <table-conversion> <fichier-entrée> <fichier-sortie>\n\n"
+                + "Options :\n" + "    -tm  --texte-morse    Convertit de texte vers morse\n"
+                + "    -mt  --morse-texte    Convertit de morse vers texte");
+        System.exit(1);
     }
 
     private static boolean parseOption(String[] args) {
-        if(args[0].equals("-tm") || args[0].equals("--texte-morse")) {
+        if (args[0].equals("-tm") || args[0].equals("--texte-morse")) {
             return false;
-        } else if(args[0].equals("-mt") || args[0].equals("--morse-texte")) {
+        } else if (args[0].equals("-mt") || args[0].equals("--morse-texte")) {
             return true;
         } else {
             System.err.println("L'option " + args[0] + " est inconnue");
@@ -53,7 +54,7 @@ public class Morsinator extends Application {
     private static InputStream getConversionFileStream(String[] args) {
         try {
             return new FileInputStream(args[1]);
-        } catch(FileNotFoundException exception) {
+        } catch (FileNotFoundException exception) {
             System.err.println("Table de conversion introuvable");
             System.exit(1);
         }
@@ -61,7 +62,8 @@ public class Morsinator extends Application {
         return null;
     }
 
-    private static void getConversionCollections(String[] args, TextConversion textConversion, MorseConversion morseConversion) {
+    private static void getConversionCollections(String[] args, TextConversion textConversion,
+            MorseConversion morseConversion) {
         InputStream conversionFile = getConversionFileStream(args);
         ConversionReader conversionReader = new TextualConversionReader();
 
@@ -79,7 +81,7 @@ public class Morsinator extends Application {
 
         try {
             conversionFile.close();
-        } catch(IOException e) {
+        } catch (IOException e) {
             System.err.println("Erreur de fermeture de la table de conversion");
             System.exit(1);
         }
@@ -88,7 +90,7 @@ public class Morsinator extends Application {
     private static InputStream openInputStream(String[] args) {
         try {
             return new FileInputStream(args[2]);
-        } catch(FileNotFoundException exception) {
+        } catch (FileNotFoundException exception) {
             System.err.println("Fichier d'entrée introuvable");
             System.exit(1);
             return null;
@@ -98,7 +100,7 @@ public class Morsinator extends Application {
     private static OutputStream openOutputStream(String[] args) {
         try {
             return new FileOutputStream(args[3]);
-        } catch(FileNotFoundException exception) {
+        } catch (FileNotFoundException exception) {
             System.err.println("Fichier de sortie introuvable");
             System.exit(1);
             return null;
@@ -135,23 +137,25 @@ public class Morsinator extends Application {
 
         MorseConverter morseConverter = new TextualMorseConverter();
 
-        if(morseToText) {
+        if (morseToText) {
             try {
                 morseConverter.morseToText(reader, writer, morseConversion);
-            } catch(MorsinatorParseException e) {
-                System.err.println("Erreur de traduction du fichier morse\n" + args[2] + ":" + e.getRow() + " : " + e.getMessage());
+            } catch (MorsinatorParseException e) {
+                System.err.println("Erreur de traduction du fichier morse\n" + args[2] + ":" + e.getRow() + " : "
+                        + e.getMessage());
                 System.exit(1);
-            } catch(IOException e) {
+            } catch (IOException e) {
                 System.err.println("Erreur d'entrée-sortie à la conversion");
                 System.exit(1);
             }
         } else {
             try {
                 morseConverter.textToMorse(reader, writer, textConversion);
-            } catch(MorsinatorParseException e) {
-                System.err.println("Erreur de traduction du fichier texte\n" + args[2] + ":" + e.getRow() + " : " + e.getMessage());
+            } catch (MorsinatorParseException e) {
+                System.err.println("Erreur de traduction du fichier texte\n" + args[2] + ":" + e.getRow() + " : "
+                        + e.getMessage());
                 System.exit(1);
-            } catch(IOException e) {
+            } catch (IOException e) {
                 System.err.println("Erreur d'entrée-sortie à la conversion");
                 System.exit(1);
             }
@@ -159,7 +163,7 @@ public class Morsinator extends Application {
 
         try {
             writer.close();
-        } catch(IOException e) {
+        } catch (IOException e) {
             System.err.println("Erreur à la fermeture du flux d'écriture dans le fichier de sortie");
             System.exit(1);
         }
