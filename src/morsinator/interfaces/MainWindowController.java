@@ -12,7 +12,12 @@ import morsinator.converter.TextualMorseConverter;
 import morsinator.reader.ConversionReader;
 import morsinator.reader.TextualConversionReader;
 import javafx.stage.Stage;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.application.Platform;
 
 import java.io.BufferedInputStream;
@@ -38,6 +43,14 @@ public class MainWindowController {
     private TextArea textCodeArea;
     @FXML
     private TextArea morseCodeArea;
+    @FXML
+    private Label textErrorLabel;
+    @FXML
+    private Label morseErrorLabel;
+    @FXML
+    private Circle textErrorCircle;
+    @FXML
+    private Circle morseErrorCircle;
 
     private Stage stage;
 
@@ -69,16 +82,26 @@ public class MainWindowController {
             Writer writer = new StringWriter();
             try {
                 morseConverter.textToMorse(reader, writer, textConversion);
+                final String morse = writer.toString();
+                Platform.runLater(() -> {
+                    morseCodeArea.setText(morse);
+                    conversionThread = null;
+                    textErrorLabel.setText("");
+                    textErrorCircle.setFill(Color.LIME);
+                    morseErrorLabel.setText("");
+                    morseErrorCircle.setFill(Color.LIME);
+                });
             } catch (MorsinatorParseException e) {
-                // TODO
+                Platform.runLater(() -> {
+                    textErrorLabel.setText("Ligne " + e.getRow() + " : " + e.getMessage());
+                    textErrorCircle.setFill(Color.RED);
+                });
             } catch (IOException e) {
-                // TODO
+                Platform.runLater(() -> {
+                    textErrorLabel.setText(e.getMessage());
+                    textErrorCircle.setFill(Color.RED);
+                });
             }
-            final String morse = writer.toString();
-            Platform.runLater(() -> {
-                morseCodeArea.setText(morse);
-                conversionThread = null;
-            });
         });
         conversionThread.start();
     }
@@ -92,16 +115,26 @@ public class MainWindowController {
             Writer writer = new StringWriter();
             try {
                 morseConverter.morseToText(reader, writer, morseConversion);
+                final String text = writer.toString();
+                Platform.runLater(() -> {
+                    textCodeArea.setText(text);
+                    conversionThread = null;
+                    textErrorLabel.setText("");
+                    textErrorCircle.setFill(Color.LIME);
+                    morseErrorLabel.setText("");
+                    morseErrorCircle.setFill(Color.LIME);
+                });
             } catch (MorsinatorParseException e) {
-                // TODO
+                Platform.runLater(() -> {
+                    morseErrorLabel.setText("Ligne " + e.getRow() + " : " + e.getMessage());
+                    morseErrorCircle.setFill(Color.RED);
+                });
             } catch (IOException e) {
-                // TODO
+                Platform.runLater(() -> {
+                    morseErrorLabel.setText(e.getMessage());
+                    morseErrorCircle.setFill(Color.RED);
+                });
             }
-            final String text = writer.toString();
-            Platform.runLater(() -> {
-                textCodeArea.setText(text);
-                conversionThread = null;
-            });
         });
         conversionThread.start();
     }
@@ -114,7 +147,7 @@ public class MainWindowController {
             // TODO fichier introuvable
             System.exit(1);
         }
-        ConversionReader conversionReader = new TextualConversionReader();
+            ConversionReader conversionReader = new TextualConversionReader();
 
         try {
             conversionReader.fill(new InputStreamReader(new BufferedInputStream(conversionFile)), textConversion,
