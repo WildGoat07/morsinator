@@ -22,7 +22,7 @@ public class Morsinator extends Application {
                 getClass().getClassLoader().getResource("morsinator/interfaces/MainWindow.fxml"));
         fxmlLoader.setController(new MainWindowController(stage));
         Parent root = fxmlLoader.load();
-        Scene scene = new Scene(root, 600, 500);
+        Scene scene = new Scene(root, 800, 600);
 
         stage.setTitle("Morsinator");
         stage.setMinHeight(400);
