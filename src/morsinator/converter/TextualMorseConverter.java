@@ -8,14 +8,14 @@ import morsinator.MorsinatorParseException;
 import morsinator.collections.MorseConversion;
 import morsinator.collections.TextConversion;
 import morsinator.text.ReaderTextPos;
+import morsinator.text.TextPosition;
 
 public class TextualMorseConverter implements MorseConverter {
     private static final char[] ignoredChars = new char[] { '\n', '\r', ' ' };
 
     private enum MorseStep {
-        READ_MORSE,
         WAIT_NEXT,
-        WAIT_SPACE
+        READ_MORSE
     }
 
     private enum TextStep {
@@ -83,13 +83,23 @@ public class TextualMorseConverter implements MorseConverter {
     public void morseToText(Reader reader, Writer writer, MorseConversion morseConversion) throws MorsinatorParseException, IOException {
         ReaderTextPos readerTp = new ReaderTextPos(reader);
         int current;
-        MorseStep step = MorseStep.READ_MORSE;
+        MorseStep step = MorseStep.WAIT_NEXT;
         String morse = "";
 
         while((current = readerTp.read()) != -1) {
             char c = (char)current;
 
             switch(step) {
+                case WAIT_NEXT:
+                    if(c == '/') {
+                        writer.write(' ');
+                    } else if(c != ' ') {
+                        morse = "" + c;
+                        step = MorseStep.READ_MORSE;
+                    }
+
+                    break;
+
                 case READ_MORSE:
                     if(c == ' ') {
                         char letter;
@@ -102,31 +112,27 @@ public class TextualMorseConverter implements MorseConverter {
 
                         writer.write(letter);
                         step = MorseStep.WAIT_NEXT;
+                    } else if(c == '/') {
+                        writer.write(' ');
+                        step = MorseStep.WAIT_NEXT;
                     } else {
                         morse += c;
                     }
 
                     break;
-
-                case WAIT_NEXT:
-                    if(c == '/') {
-                        writer.write(' ');
-                        step = MorseStep.WAIT_SPACE;
-                    } else {
-                        morse = "" + c;
-                        step = MorseStep.READ_MORSE;
-                    }
-
-                    break;
-
-                case WAIT_SPACE:
-                    if(c == ' ') {
-                        morse = "";
-                        step = MorseStep.READ_MORSE;
-                    }
-
-                    break;
             }
+        }
+
+        if(step == MorseStep.READ_MORSE) {
+            char letter;
+
+            try {
+                letter = morseConversion.getLetter(morse);
+            } catch(IllegalArgumentException e) {
+                throw new MorsinatorParseException(e.getMessage(), readerTp.getTextPos());
+            }
+
+            writer.write(letter);
         }
     }
 }
