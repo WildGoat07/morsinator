@@ -37,9 +37,9 @@ public class TextualConversionReader implements ConversionReader {
 
                     // vérifications d'intégrités
                     if(key.length() != 1)
-                        throw new MorsinatorParseException("Lettre invalide", readerTp.getRow());
+                        throw new MorsinatorParseException("Lettre invalide", readerTp.getTextPos().getRow());
                     else if(addedLetters.contains(key))
-                        throw new MorsinatorParseException("Lettre déjà ajoutée", readerTp.getRow());
+                        throw new MorsinatorParseException("Lettre déjà ajoutée", readerTp.getTextPos().getRow());
 
                     addedLetters.add(key);
                     readingKey = false;
@@ -50,7 +50,7 @@ public class TextualConversionReader implements ConversionReader {
             } else {
                 // étape 2 : lecture de la valeur (le code morse)
                 if(currentChar == '\n' && !value.trim().isEmpty()) {
-                    registerRow(key, value, tm, mt, readerTp.getRow());
+                    registerRow(key, value, tm, mt, readerTp.getTextPos().getRow());
                     readingKey = true;
                     key = "";
                 } else {
@@ -62,9 +62,9 @@ public class TextualConversionReader implements ConversionReader {
         }
 
         if(readingKey && !key.trim().isEmpty())
-            throw new MorsinatorParseException("Fin de fichier inattendue", readerTp.getRow());
+            throw new MorsinatorParseException("Fin de fichier inattendue", readerTp.getTextPos().getRow());
         else if(!readingKey) {
-            registerRow(key, value, tm, mt, readerTp.getRow());
+            registerRow(key, value, tm, mt, readerTp.getTextPos().getRow());
         }
     }
 }

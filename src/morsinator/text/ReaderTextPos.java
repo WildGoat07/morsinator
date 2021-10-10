@@ -22,7 +22,7 @@ public class ReaderTextPos {
         return c;
     }
 
-    public int getRow() {
-        return textPos.getRow();
+    public TextPosition getTextPos() {
+        return textPos;
     }
 }
