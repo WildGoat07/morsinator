@@ -5,8 +5,6 @@ import morsinator.collections.generics.MorsiBinaryTree;
 import java.util.function.*;
 import java.util.*;
 
-import morsinator.MorsinatorParseException;
-
 public class ConversionBinaryTree extends MorsiBinaryTree<String, Character> implements MorseConversion {
     /**
      * Simple délégué pour convertir une clé en morse en une route
@@ -37,23 +35,29 @@ public class ConversionBinaryTree extends MorsiBinaryTree<String, Character> imp
         super(morseConvert);
     }
 
-    public void addRow(char letter, String morse) throws MorsinatorParseException {
+    public void addRow(char letter, String morse) {
+        boolean contains;
+
         try {
-            if(containsKey(morse)) {
-                throw new MorsinatorParseException("Code morse de '" + letter + "' déjà ajouté sous la lettre '" + get(morse) + "'");
-            } else {
-                set(morse, letter);
-            }
+            contains = containsKey(morse);
         } catch(IllegalArgumentException e) {
-            throw new MorsinatorParseException("Le code \"" + morse + "\" n'est pas un code morse valide, impossible de le sauvegarder dans l'arbre");
+            throw new IllegalArgumentException("Le code \"" + morse + "\" n'est pas un code morse valide, impossible de le sauvegarder dans l'arbre");
+        }
+
+        if(contains) {
+            throw new IllegalArgumentException("Code morse de '" + letter + "' déjà ajouté sous la lettre '" + get(morse) + "'");
+        } else {
+            set(morse, letter);
         }
     }
 
-    public char getLetter(String morse) throws MorsinatorParseException {
+    public char getLetter(String morse) {
         try {
             return get(morse);
-        } catch(NoSuchElementException | IllegalArgumentException e) {
-            throw new MorsinatorParseException("Le code morse " + morse + " n'a pas de traduction dans la table fournie");
+        } catch(IllegalArgumentException e) {
+            throw new IllegalArgumentException("Le code \"" + morse + "\" n'est pas un code morse valide");
+        } catch(NoSuchElementException e) {
+            throw new IllegalArgumentException("Le code morse \"" + morse + "\" n'a pas de traduction dans la table fournie");
         }
     }
 }

@@ -48,9 +48,8 @@ public class TextualMorseConverter implements MorseConverter {
 
                         try {
                             morse = textConversion.getMorse((char) current);
-                        } catch(MorsinatorParseException e) {
-                            e.setRow(readerRc.getRow());
-                            throw e;
+                        } catch(IllegalArgumentException e) {
+                            throw new MorsinatorParseException(e.getMessage(), readerRc.getRow());
                         }
 
                         writer.write(morse);
@@ -65,9 +64,8 @@ public class TextualMorseConverter implements MorseConverter {
 
                         try {
                             morse = textConversion.getMorse((char) current);
-                        } catch(MorsinatorParseException e) {
-                            e.setRow(readerRc.getRow());
-                            throw e;
+                        } catch(IllegalArgumentException e) {
+                            throw new MorsinatorParseException(e.getMessage(), readerRc.getRow());
                         }
 
                         writer.write(' ' + morse);
@@ -98,9 +96,8 @@ public class TextualMorseConverter implements MorseConverter {
 
                         try {
                             letter = morseConversion.getLetter(morse);
-                        } catch(MorsinatorParseException e) {
-                            e.setRow(readerRc.getRow());
-                            throw e;
+                        } catch(IllegalArgumentException e) {
+                            throw new MorsinatorParseException(e.getMessage(), readerRc.getRow());
                         }
 
                         writer.write(letter);

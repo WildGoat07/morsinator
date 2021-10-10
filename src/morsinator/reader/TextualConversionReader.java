@@ -13,9 +13,8 @@ public class TextualConversionReader implements ConversionReader {
 
         try {
             mt.addRow(key.charAt(0), value);
-        } catch(MorsinatorParseException e) {
-            e.setRow(row);
-            throw e;
+        } catch(IllegalArgumentException e) {
+            throw new MorsinatorParseException(e.getMessage(), row);
         }
     }
 
