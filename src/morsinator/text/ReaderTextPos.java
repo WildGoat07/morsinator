@@ -17,6 +17,8 @@ public class ReaderTextPos {
 
         if(c == '\n') {
             textPos.lineFeed();
+        } else {
+            textPos.newChar();
         }
 
         return c;
