@@ -19,6 +19,7 @@ public class TextPosition {
     protected void lineFeed() {
         row++;
         col = 1;
+        pos++;
     }
 
     public int getRow() {
