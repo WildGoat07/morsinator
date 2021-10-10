@@ -5,24 +5,24 @@ import java.io.IOException;
 
 public class ReaderTextPos {
     private Reader reader;
-    private int row;
+    private TextPosition textPos;
 
     public ReaderTextPos(Reader reader) {
         this.reader = reader;
-        row = 1;
+        textPos = new TextPosition();
     }
 
     public int read() throws IOException {
         int c = reader.read();
 
         if(c == '\n') {
-            row++;
+            textPos.lineFeed();
         }
 
         return c;
     }
 
     public int getRow() {
-        return row;
+        return textPos.getRow();
     }
 }
