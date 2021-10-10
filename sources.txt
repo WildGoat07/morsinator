@@ -14,3 +14,4 @@
 ./src/morsinator/collections/generics/MorsiList.java
 ./src/morsinator/interfaces/MainWindowController.java
 ./src/morsinator/text/ReaderTextPos.java
+./src/morsinator/text/TextPosition.java
