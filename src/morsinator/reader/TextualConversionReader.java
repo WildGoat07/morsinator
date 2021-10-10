@@ -5,6 +5,7 @@ import java.util.*;
 
 import morsinator.MorsinatorParseException;
 import morsinator.collections.*;
+import morsinator.text.ReaderRowCol;
 
 public class TextualConversionReader implements ConversionReader {
     private void registerRow(String key, String value, TextConversion tm, MorseConversion mt, int row) throws MorsinatorParseException {

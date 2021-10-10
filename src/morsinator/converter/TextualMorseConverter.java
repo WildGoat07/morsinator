@@ -7,7 +7,7 @@ import java.io.Writer;
 import morsinator.MorsinatorParseException;
 import morsinator.collections.MorseConversion;
 import morsinator.collections.TextConversion;
-import morsinator.reader.ReaderRowCol;
+import morsinator.text.ReaderRowCol;
 
 public class TextualMorseConverter implements MorseConverter {
     private static final char[] ignoredChars = new char[] { '\n', '\r', ' ' };

@@ -1,4 +1,4 @@
-package morsinator.reader;
+package morsinator.text;
 
 import java.io.Reader;
 import java.io.IOException;
