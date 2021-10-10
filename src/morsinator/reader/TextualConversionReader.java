@@ -5,7 +5,7 @@ import java.util.*;
 
 import morsinator.MorsinatorParseException;
 import morsinator.collections.*;
-import morsinator.text.ReaderRowCol;
+import morsinator.text.ReaderTextPos;
 
 public class TextualConversionReader implements ConversionReader {
     private void registerRow(String key, String value, TextConversion tm, MorseConversion mt, int row) throws MorsinatorParseException {
@@ -21,7 +21,7 @@ public class TextualConversionReader implements ConversionReader {
 
     @Override
     public void fill(Reader reader, TextConversion tm, MorseConversion mt) throws MorsinatorParseException, IOException {
-        ReaderRowCol readerRc = new ReaderRowCol(reader);
+        ReaderTextPos readerTp = new ReaderTextPos(reader);
         HashSet<String> addedLetters = new HashSet<>();
 
         String key = "";
@@ -37,9 +37,9 @@ public class TextualConversionReader implements ConversionReader {
 
                     // vérifications d'intégrités
                     if(key.length() != 1)
-                        throw new MorsinatorParseException("Lettre invalide", readerRc.getRow());
+                        throw new MorsinatorParseException("Lettre invalide", readerTp.getRow());
                     else if(addedLetters.contains(key))
-                        throw new MorsinatorParseException("Lettre déjà ajoutée", readerRc.getRow());
+                        throw new MorsinatorParseException("Lettre déjà ajoutée", readerTp.getRow());
 
                     addedLetters.add(key);
                     readingKey = false;
@@ -50,7 +50,7 @@ public class TextualConversionReader implements ConversionReader {
             } else {
                 // étape 2 : lecture de la valeur (le code morse)
                 if(currentChar == '\n' && !value.trim().isEmpty()) {
-                    registerRow(key, value, tm, mt, readerRc.getRow());
+                    registerRow(key, value, tm, mt, readerTp.getRow());
                     readingKey = true;
                     key = "";
                 } else {
@@ -62,9 +62,9 @@ public class TextualConversionReader implements ConversionReader {
         }
 
         if(readingKey && !key.trim().isEmpty())
-            throw new MorsinatorParseException("Fin de fichier inattendue", readerRc.getRow());
+            throw new MorsinatorParseException("Fin de fichier inattendue", readerTp.getRow());
         else if(!readingKey) {
-            registerRow(key, value, tm, mt, readerRc.getRow());
+            registerRow(key, value, tm, mt, readerTp.getRow());
         }
     }
 }

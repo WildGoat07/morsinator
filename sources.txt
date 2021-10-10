@@ -13,4 +13,4 @@
 ./src/morsinator/collections/generics/MorsiBinaryTree.java
 ./src/morsinator/collections/generics/MorsiList.java
 ./src/morsinator/interfaces/MainWindowController.java
-./src/morsinator/text/ReaderRowCol.java
+./src/morsinator/text/ReaderTextPos.java
