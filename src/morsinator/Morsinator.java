@@ -4,6 +4,7 @@ import morsinator.reader.*;
 import morsinator.collections.*;
 import morsinator.converter.*;
 import morsinator.interfaces.MainWindowController;
+import morsinator.text.TextPosition;
 
 import java.io.*;
 
@@ -71,7 +72,8 @@ public class Morsinator extends Application {
             conversionReader.fill(new InputStreamReader(new BufferedInputStream(conversionFile)), textConversion,
                     morseConversion);
         } catch (MorsinatorParseException exception) {
-            System.err.println("Erreur de lecture de la table de conversion\n" + args[1] + ":" + exception.getRow()
+            TextPosition tp = exception.getTextPos();
+            System.err.println("Erreur de lecture de la table de conversion\n" + args[1] + ":" + tp.getRow()
                     + " : " + exception.getMessage());
             System.exit(1);
         } catch (IOException exception) {
@@ -141,7 +143,8 @@ public class Morsinator extends Application {
             try {
                 morseConverter.morseToText(reader, writer, morseConversion);
             } catch (MorsinatorParseException e) {
-                System.err.println("Erreur de traduction du fichier morse\n" + args[2] + ":" + e.getRow() + " : "
+                TextPosition tp = e.getTextPos();
+                System.err.println("Erreur de traduction du fichier morse\n" + args[2] + ":" + tp.getRow() + " : "
                         + e.getMessage());
                 System.exit(1);
             } catch (IOException e) {
@@ -152,7 +155,8 @@ public class Morsinator extends Application {
             try {
                 morseConverter.textToMorse(reader, writer, textConversion);
             } catch (MorsinatorParseException e) {
-                System.err.println("Erreur de traduction du fichier texte\n" + args[2] + ":" + e.getRow() + " : "
+                TextPosition tp = e.getTextPos();
+                System.err.println("Erreur de traduction du fichier texte\n" + args[2] + ":" + tp.getRow() + " : "
                         + e.getMessage());
                 System.exit(1);
             } catch (IOException e) {

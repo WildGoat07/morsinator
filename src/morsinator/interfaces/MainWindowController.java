@@ -11,6 +11,8 @@ import morsinator.converter.MorseConverter;
 import morsinator.converter.TextualMorseConverter;
 import morsinator.reader.ConversionReader;
 import morsinator.reader.TextualConversionReader;
+import morsinator.text.TextPosition;
+
 import javafx.stage.Stage;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -93,7 +95,8 @@ public class MainWindowController {
                 });
             } catch (MorsinatorParseException e) {
                 Platform.runLater(() -> {
-                    textErrorLabel.setText("Ligne " + e.getRow() + " : " + e.getMessage());
+                    TextPosition tp = e.getTextPos();
+                    textErrorLabel.setText("Ligne " + tp.getRow() + " : " + e.getMessage());
                     textErrorCircle.setFill(Color.RED);
                 });
             } catch (IOException e) {
@@ -126,7 +129,8 @@ public class MainWindowController {
                 });
             } catch (MorsinatorParseException e) {
                 Platform.runLater(() -> {
-                    morseErrorLabel.setText("Ligne " + e.getRow() + " : " + e.getMessage());
+                    TextPosition tp = e.getTextPos();
+                    morseErrorLabel.setText("Ligne " + tp.getRow() + " : " + e.getMessage());
                     morseErrorCircle.setFill(Color.RED);
                 });
             } catch (IOException e) {
@@ -154,8 +158,10 @@ public class MainWindowController {
             dialog.showAndWait();
         } catch (MorsinatorParseException e) {
             Alert dialog = new Alert(AlertType.ERROR);
+            TextPosition tp = e.getTextPos();
+
             dialog.setTitle("Erreur de lecture de la table de conversion");
-            dialog.setContentText("Ligne " + e.getRow() + " " + e.getMessage());
+            dialog.setContentText("Ligne " + tp.getRow() + " " + e.getMessage());
             dialog.showAndWait();
         } catch (IOException e) {
             Alert dialog = new Alert(AlertType.ERROR);

@@ -10,7 +10,7 @@ public class MorsinatorParseException extends Exception {
         this.textPos = textPos;
     }
 
-    public int getRow() {
-        return textPos.getRow();
+    public TextPosition getTextPos() {
+        return textPos;
     }
 }
