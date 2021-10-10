@@ -74,7 +74,7 @@ public class Morsinator extends Application {
         } catch (MorsinatorParseException exception) {
             TextPosition tp = exception.getTextPos();
             System.err.println("Erreur de lecture de la table de conversion\n" + args[1] + ":" + tp.getRow()
-                    + " : " + exception.getMessage());
+                    + ":" + tp.getCol() + " : " + exception.getMessage());
             System.exit(1);
         } catch (IOException exception) {
             System.err.println("Erreur de lecture de la table de conversion\n" + exception.getMessage());
@@ -144,8 +144,8 @@ public class Morsinator extends Application {
                 morseConverter.morseToText(reader, writer, morseConversion);
             } catch (MorsinatorParseException e) {
                 TextPosition tp = e.getTextPos();
-                System.err.println("Erreur de traduction du fichier morse\n" + args[2] + ":" + tp.getRow() + " : "
-                        + e.getMessage());
+                System.err.println("Erreur de traduction du fichier morse\n" + args[2] + ":" + tp.getRow()
+                        + ":" + tp.getCol() + " : " + e.getMessage());
                 System.exit(1);
             } catch (IOException e) {
                 System.err.println("Erreur d'entrée-sortie à la conversion");
@@ -156,8 +156,8 @@ public class Morsinator extends Application {
                 morseConverter.textToMorse(reader, writer, textConversion);
             } catch (MorsinatorParseException e) {
                 TextPosition tp = e.getTextPos();
-                System.err.println("Erreur de traduction du fichier texte\n" + args[2] + ":" + tp.getRow() + " : "
-                        + e.getMessage());
+                System.err.println("Erreur de traduction du fichier texte\n" + args[2] + ":" + tp.getRow()
+                        + ":" + tp.getCol() + " : " + e.getMessage());
                 System.exit(1);
             } catch (IOException e) {
                 System.err.println("Erreur d'entrée-sortie à la conversion");
