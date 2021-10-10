@@ -1,14 +1,16 @@
 package morsinator;
 
-public class MorsinatorParseException extends Exception {
-    private int row;
+import morsinator.text.TextPosition;
 
-    public MorsinatorParseException(String message, int row) {
+public class MorsinatorParseException extends Exception {
+    private TextPosition textPos;
+
+    public MorsinatorParseException(String message, TextPosition textPos) {
         super(message);
-        this.row = row;
+        this.textPos = textPos;
     }
 
     public int getRow() {
-        return row;
+        return textPos.getRow();
     }
 }
