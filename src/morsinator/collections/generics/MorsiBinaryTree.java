@@ -39,6 +39,11 @@ public class MorsiBinaryTree<E, F> {
      */
     private final Function<? super E, ? extends Iterable<Boolean>> converter;
 
+    public void clear() {
+        baseNode.leftNode = null;
+        baseNode.rightNode = null;
+    }
+
     public void set(E key, F value) {
         // Le noeud actuel pour la recherche dans l'abre
         Node<F> currentNode = baseNode;
@@ -97,6 +102,41 @@ public class MorsiBinaryTree<E, F> {
         }
         // on est arrivés au bout, c'est que la valeur existe
         return currentNode.hasValue;
+    }
+
+    public void remove(E key) {
+        // Le noeud actuel pour la recherche dans l'abre
+        Node<F> currentNode = baseNode;
+        Iterable<Boolean> route = converter.apply(key);
+
+        if (route == null)
+            throw new IllegalArgumentException();
+
+        // Pour chaque direction à prendre dans l'arbre...
+        for (Boolean state : route) {
+            if (state) {
+                // si il faut prendre la branche de gauche
+                if (currentNode.leftNode == null)
+                    // si la branche n'existe pas, ça sert à rien de continuer
+                    throw new NoSuchElementException();
+                // on change le noeud actuel pour continuer la recherche
+                currentNode = currentNode.leftNode;
+            } else {
+                // sinon on prend la branche de droite
+                if (currentNode.rightNode == null)
+                    // si la branche n'existe pas, ça sert à rien de continuer
+                    throw new NoSuchElementException();
+                // on change le noeud actuel pour continuer la recherche
+                currentNode = currentNode.rightNode;
+            }
+        }
+
+        if (currentNode.hasValue) {
+            currentNode.value = null;
+            currentNode.hasValue = false;
+        } else {
+            throw new NoSuchElementException();
+        }
     }
 
     public F get(E key) {

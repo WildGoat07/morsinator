@@ -2,6 +2,7 @@ package morsinator.interfaces;
 
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import morsinator.Morsinator;
 import morsinator.MorsinatorParseException;
 import morsinator.collections.ConversionBinaryTree;
 import morsinator.collections.ConversionList;
@@ -9,8 +10,8 @@ import morsinator.collections.MorseConversion;
 import morsinator.collections.TextConversion;
 import morsinator.converter.MorseConverter;
 import morsinator.converter.TextualMorseConverter;
-import morsinator.reader.ConversionReader;
-import morsinator.reader.TextualConversionReader;
+import morsinator.table.ConversionReader;
+import morsinator.table.TextualConversion;
 import morsinator.text.TextPosition;
 
 import javafx.stage.Stage;
@@ -20,7 +21,13 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.image.Image;
+import javafx.scene.Scene;
+import javafx.scene.Parent;
+
 import javafx.application.Platform;
+
+import javafx.fxml.FXMLLoader;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -64,11 +71,14 @@ public class MainWindowController {
     private File lastMorse;
     private Thread conversionThread;
     private Object mutex;
+    private File lastTable;
+    private boolean lastEditedText;
 
     public MainWindowController(Stage stage) {
         this.stage = stage;
         lastText = null;
         lastMorse = null;
+        lastTable = new File("./conversions.txt");
         conversionThread = null;
         morseConverter = new TextualMorseConverter();
         textConversion = new ConversionList();
@@ -77,10 +87,12 @@ public class MainWindowController {
     }
 
     public void textToMorse() {
+        lastEditedText = true;
         if (conversionThread != null)
             conversionThread.interrupt();
         final String text = textCodeArea.getText();
         conversionThread = new Thread(() -> {
+            lastEditedText = true;
             Reader reader = new StringReader(text);
             Writer writer = new StringWriter();
             try {
@@ -115,6 +127,7 @@ public class MainWindowController {
             conversionThread.interrupt();
         final String morse = morseCodeArea.getText();
         conversionThread = new Thread(() -> {
+            lastEditedText = false;
             Reader reader = new StringReader(morse);
             Writer writer = new StringWriter();
             try {
@@ -146,8 +159,10 @@ public class MainWindowController {
 
     private void initConversionTable() {
         try {
-            InputStream conversionFile = new FileInputStream("./conversions.txt");
-            ConversionReader conversionReader = new TextualConversionReader();
+            InputStream conversionFile = new FileInputStream(lastTable);
+            ConversionReader conversionReader = new TextualConversion();
+            textConversion.clear();
+            morseConversion.clear();
             conversionReader.fill(
                     new InputStreamReader(new BufferedInputStream(conversionFile), Charset.forName("UTF-8")),
                     textConversion, morseConversion);
@@ -155,7 +170,7 @@ public class MainWindowController {
         } catch (FileNotFoundException e) {
             Alert dialog = new Alert(AlertType.ERROR);
             dialog.setTitle("Erreur de lecture de la table de conversion");
-            dialog.setContentText("Fichier de table de conversion 'conversions.txt' introuvable.");
+            dialog.setContentText("Fichier de table de conversion '" + lastTable.getAbsolutePath() + "' introuvable.");
             dialog.showAndWait();
         } catch (MorsinatorParseException e) {
             Alert dialog = new Alert(AlertType.ERROR);
@@ -180,7 +195,7 @@ public class MainWindowController {
         File file = fileChooser.showOpenDialog(stage);
         if (file != null) {
             try {
-                Reader reader = new BufferedReader(new FileReader(file));
+                Reader reader = new BufferedReader(new FileReader(file, Charset.forName("UTF-8")));
                 StringBuilder builder = new StringBuilder();
                 int character;
                 while ((character = reader.read()) != -1)
@@ -211,7 +226,7 @@ public class MainWindowController {
         File file = fileChooser.showOpenDialog(stage);
         if (file != null) {
             try {
-                Reader reader = new BufferedReader(new FileReader(file));
+                Reader reader = new BufferedReader(new FileReader(file, Charset.forName("UTF-8")));
                 StringBuilder builder = new StringBuilder();
                 int character;
                 while ((character = reader.read()) != -1)
@@ -232,6 +247,10 @@ public class MainWindowController {
                 dialog.showAndWait();
             }
         }
+    }
+
+    public void close() {
+        stage.close();
     }
 
     public void saveText() {
@@ -290,5 +309,56 @@ public class MainWindowController {
             lastMorse = file;
             saveMorse();
         }
+    }
+
+    public void importTable() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Importer une table");
+        fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Fichiers texte", "*.txt"),
+                new ExtensionFilter("Tous les fichiers", "*.*"));
+        File file = fileChooser.showOpenDialog(stage);
+        if (file != null) {
+            lastTable = file;
+            refreshTable();
+        }
+    }
+
+    public void editTable() {
+        try {
+            Stage tableStage = new Stage();
+            FXMLLoader fxmlLoader = new FXMLLoader(
+                    getClass().getClassLoader().getResource("morsinator/interfaces/EditTable.fxml"));
+            EditTableController controller = new EditTableController(tableStage, textConversion, morseConversion);
+            fxmlLoader.setController(controller);
+            Parent root = fxmlLoader.load();
+            controller.load();
+            Scene scene = new Scene(root, 600, 700);
+
+            tableStage.setTitle("Gestion de la table");
+            tableStage.setMinHeight(600);
+            tableStage.setMinWidth(500);
+            tableStage.setScene(scene);
+            tableStage.getIcons()
+                    .add(new Image(getClass().getClassLoader().getResource("assets/icons/icon.png").toString()));
+            tableStage.initOwner(stage);
+            tableStage.showAndWait();
+            if (lastEditedText)
+                textToMorse();
+            else
+                morseToText();
+        } catch (IOException e) {
+            Alert dialog = new Alert(AlertType.ERROR);
+            dialog.setTitle("Erreur interne");
+            dialog.setContentText(e.getMessage());
+            dialog.showAndWait();
+        }
+    }
+
+    public void refreshTable() {
+        initConversionTable();
+        if (lastEditedText)
+            textToMorse();
+        else
+            morseToText();
     }
 }

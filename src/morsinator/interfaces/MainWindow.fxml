@@ -3,7 +3,10 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitMenuButton?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TitledPane?>
@@ -17,196 +20,310 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.shape.Circle?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
-  <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-  </columnConstraints>
-  <rowConstraints>
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-  </rowConstraints>
-   <children>
-      <TitledPane collapsible="false" maxHeight="1.7976931348623157E308" text="Texte">
-         <content>
-            <BorderPane prefHeight="200.0" prefWidth="200.0">
-               <center>
-                  <BorderPane BorderPane.alignment="CENTER">
-                     <BorderPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </BorderPane.margin>
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <TitledPane collapsible="false" maxHeight="1.7976931348623157E308" text="Texte">
+               <content>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <center>
-                        <TextArea fx:id="textCodeArea" onKeyTyped="#textToMorse" wrapText="true" />
-                     </center>
-                     <top>
-                        <HBox alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
+                        <BorderPane BorderPane.alignment="CENTER">
                            <BorderPane.margin>
-                              <Insets />
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </BorderPane.margin>
+                           <center>
+                              <TextArea fx:id="textCodeArea" onKeyTyped="#textToMorse" wrapText="true" />
+                           </center>
+                           <top>
+                              <HBox alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
+                                 <BorderPane.margin>
+                                    <Insets />
+                                 </BorderPane.margin>
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#importText" text="Importer">
+                                       <graphic>
+                                          <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../assets/icons/ImportTextFile_16x.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </HBox.margin>
+                                       <tooltip>
+                                          <Tooltip text="Importer un fichier texte" />
+                                       </tooltip>
+                                    </Button>
+                                    <SplitMenuButton mnemonicParsing="false" onAction="#saveText" text="Sauvegarder">
+                                      <items>
+                                        <MenuItem mnemonicParsing="false" onAction="#saveText" text="Sauvegarder">
+                                             <graphic>
+                                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../assets/icons/SaveText_16x.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </MenuItem>
+                                        <MenuItem mnemonicParsing="false" onAction="#saveTextAs" text="Sauvegarder sous...">
+                                             <graphic>
+                                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../assets/icons/SaveTextAs_16x.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </MenuItem>
+                                      </items>
+                                       <graphic>
+                                          <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../assets/icons/SaveText_16x.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </HBox.margin>
+                                       <tooltip>
+                                          <Tooltip text="Sauvegarder le fichier texte" />
+                                       </tooltip>
+                                    </SplitMenuButton>
+                                 </children>
+                              </HBox>
+                           </top>
+                        </BorderPane>
+                     </center>
+                     <bottom>
+                        <HBox alignment="CENTER_RIGHT" BorderPane.alignment="TOP_LEFT">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#importText" text="Importer">
-                                 <graphic>
-                                    <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../assets/icons/ImportFile_16x.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
+                              <Label fx:id="textErrorLabel">
                                  <HBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </HBox.margin>
-                                 <tooltip>
-                                    <Tooltip text="Importer un fichier texte" />
-                                 </tooltip>
-                              </Button>
-                              <SplitMenuButton mnemonicParsing="false" onAction="#saveText" text="Sauvegarder">
-                                <items>
-                                  <MenuItem mnemonicParsing="false" onAction="#saveText" text="Sauvegarder">
-                                       <graphic>
-                                          <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../assets/icons/Save_16x.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </MenuItem>
-                                  <MenuItem mnemonicParsing="false" onAction="#saveTextAs" text="Sauvegarder sous...">
-                                       <graphic>
-                                          <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../assets/icons/SaveAs_16x.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </MenuItem>
-                                </items>
-                                 <graphic>
-                                    <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../assets/icons/Save_16x.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
+                              </Label>
+                              <Circle fx:id="textErrorCircle" fill="LIME" radius="5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
                                  <HBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </HBox.margin>
-                                 <tooltip>
-                                    <Tooltip text="Sauvegarder le fichier texte" />
-                                 </tooltip>
-                              </SplitMenuButton>
+                              </Circle>
                            </children>
                         </HBox>
-                     </top>
+                     </bottom>
                   </BorderPane>
-               </center>
-               <bottom>
-                  <HBox alignment="CENTER_RIGHT" BorderPane.alignment="TOP_LEFT">
-                     <children>
-                        <Label fx:id="textErrorLabel">
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </HBox.margin>
-                        </Label>
-                        <Circle fx:id="textErrorCircle" fill="LIME" radius="5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </HBox.margin>
-                        </Circle>
-                     </children>
-                  </HBox>
-               </bottom>
-            </BorderPane>
-         </content>
-      </TitledPane>
-      <TitledPane collapsible="false" maxHeight="1.7976931348623157E308" text="Morse" GridPane.columnIndex="1">
-         <content>
-            <BorderPane prefHeight="200.0" prefWidth="200.0">
-               <center>
-                  <BorderPane BorderPane.alignment="CENTER">
-                     <BorderPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </BorderPane.margin>
+               </content>
+            </TitledPane>
+            <TitledPane collapsible="false" maxHeight="1.7976931348623157E308" text="Morse" GridPane.columnIndex="1">
+               <content>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <center>
-                        <TextArea fx:id="morseCodeArea" onKeyTyped="#morseToText" wrapText="true" />
-                     </center>
-                     <top>
-                        <HBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER">
+                        <BorderPane BorderPane.alignment="CENTER">
                            <BorderPane.margin>
-                              <Insets />
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </BorderPane.margin>
+                           <center>
+                              <TextArea fx:id="morseCodeArea" onKeyTyped="#morseToText" wrapText="true" />
+                           </center>
+                           <top>
+                              <HBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER">
+                                 <BorderPane.margin>
+                                    <Insets />
+                                 </BorderPane.margin>
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#importMorse" text="Importer">
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </HBox.margin>
+                                       <graphic>
+                                          <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../assets/icons/ImportMorseFile_16x.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                       <tooltip>
+                                          <Tooltip text="Importer un fichier morse" />
+                                       </tooltip>
+                                    </Button>
+                                    <SplitMenuButton mnemonicParsing="false" onAction="#saveMorse" text="Sauvegarder">
+                                      <items>
+                                        <MenuItem mnemonicParsing="false" onAction="#saveMorse" text="Sauvegarder">
+                                             <graphic>
+                                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../assets/icons/SaveMorse_16x.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </MenuItem>
+                                        <MenuItem mnemonicParsing="false" onAction="#saveMorseAs" text="Sauvegarder sous...">
+                                             <graphic>
+                                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../assets/icons/SaveMorseAs_16x.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </MenuItem>
+                                      </items>
+                                       <graphic>
+                                          <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../assets/icons/SaveMorse_16x.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </HBox.margin>
+                                       <tooltip>
+                                          <Tooltip text="Sauvegarder le fichier morse" />
+                                       </tooltip>
+                                    </SplitMenuButton>
+                                 </children>
+                              </HBox>
+                           </top>
+                        </BorderPane>
+                     </center>
+                     <bottom>
+                        <HBox alignment="CENTER_RIGHT" BorderPane.alignment="TOP_LEFT">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#importMorse" text="Importer">
+                              <Label fx:id="morseErrorLabel">
                                  <HBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </HBox.margin>
-                                 <graphic>
-                                    <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../assets/icons/ImportFile_16x.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                                 <tooltip>
-                                    <Tooltip text="Importer un fichier morse" />
-                                 </tooltip>
-                              </Button>
-                              <SplitMenuButton mnemonicParsing="false" onAction="#saveMorse" text="Sauvegarder">
-                                <items>
-                                  <MenuItem mnemonicParsing="false" onAction="#saveMorse" text="Sauvegarder">
-                                       <graphic>
-                                          <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../assets/icons/Save_16x.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </MenuItem>
-                                  <MenuItem mnemonicParsing="false" onAction="#saveMorseAs" text="Sauvegarder sous...">
-                                       <graphic>
-                                          <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../assets/icons/SaveAs_16x.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </MenuItem>
-                                </items>
-                                 <graphic>
-                                    <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../assets/icons/Save_16x.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
+                              </Label>
+                              <Circle fx:id="morseErrorCircle" fill="LIME" radius="5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
                                  <HBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </HBox.margin>
-                                 <tooltip>
-                                    <Tooltip text="Sauvegarder le fichier morse" />
-                                 </tooltip>
-                              </SplitMenuButton>
+                              </Circle>
                            </children>
                         </HBox>
-                     </top>
+                     </bottom>
                   </BorderPane>
-               </center>
-               <bottom>
-                  <HBox alignment="CENTER_RIGHT" BorderPane.alignment="TOP_LEFT">
-                     <children>
-                        <Label fx:id="morseErrorLabel">
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </HBox.margin>
-                        </Label>
-                        <Circle fx:id="morseErrorCircle" fill="LIME" radius="5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </HBox.margin>
-                        </Circle>
-                     </children>
-                  </HBox>
-               </bottom>
-            </BorderPane>
-         </content>
-      </TitledPane>
-   </children>
-</GridPane>
+               </content>
+            </TitledPane>
+         </children>
+      </GridPane>
+   </center>
+   <top>
+      <MenuBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="Fichier">
+            <items>
+                  <Menu mnemonicParsing="false" text="Texte">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#importText" text="Importer un fichier">
+                           <graphic>
+                              <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/icons/ImportTextFile_16x.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </MenuItem>
+                        <MenuItem mnemonicParsing="false" onAction="#saveText" text="Sauvegarder">
+                           <graphic>
+                              <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/icons/SaveText_16x.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </MenuItem>
+                        <MenuItem mnemonicParsing="false" onAction="#saveTextAs" text="Sauvegarder sous">
+                           <graphic>
+                              <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/icons/SaveTextAs_16x.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></MenuItem>
+                     </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Morse">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#importMorse" text="Importer un fichier">
+                           <graphic>
+                              <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/icons/ImportMorseFile_16x.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </MenuItem>
+                        <MenuItem mnemonicParsing="false" onAction="#saveMorse" text="Sauvegarder">
+                           <graphic>
+                              <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/icons/SaveMorse_16x.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </MenuItem>
+                        <MenuItem mnemonicParsing="false" onAction="#saveMorseAs" text="Sauvegarder sous">
+                           <graphic>
+                              <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/icons/SaveMorseAs_16x.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></MenuItem>
+                     </items>
+                  </Menu>
+                  <SeparatorMenuItem mnemonicParsing="false" />
+              <MenuItem mnemonicParsing="false" onAction="#close" text="Fermer">
+                     <graphic>
+                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../assets/icons/Close_16x.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></MenuItem>
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Table">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#importTable" text="Importer une table">
+                     <graphic>
+                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../assets/icons/ImportTable_16x.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" onAction="#editTable" text="Gérer la table">
+                     <graphic>
+                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../assets/icons/EditTable_16x.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" onAction="#refreshTable" text="Actualiser la table">
+                     <graphic>
+                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../assets/icons/RefreshTable_16x.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </MenuItem>
+               </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+</BorderPane>

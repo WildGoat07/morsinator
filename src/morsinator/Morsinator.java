@@ -1,9 +1,9 @@
 package morsinator;
 
-import morsinator.reader.*;
 import morsinator.collections.*;
 import morsinator.converter.*;
 import morsinator.interfaces.MainWindowController;
+import morsinator.table.*;
 import morsinator.text.TextPosition;
 
 import java.io.*;
@@ -66,7 +66,7 @@ public class Morsinator extends Application {
     private static void getConversionCollections(String[] args, TextConversion textConversion,
             MorseConversion morseConversion) {
         InputStream conversionFile = getConversionFileStream(args);
-        ConversionReader conversionReader = new TextualConversionReader();
+        ConversionReader conversionReader = new TextualConversion();
 
         try {
             conversionReader.fill(new InputStreamReader(new BufferedInputStream(conversionFile)), textConversion,

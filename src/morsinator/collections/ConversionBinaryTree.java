@@ -60,4 +60,9 @@ public class ConversionBinaryTree extends MorsiBinaryTree<String, Character> imp
             throw new IllegalArgumentException("Le code morse \"" + morse + "\" n'a pas de traduction dans la table fournie");
         }
     }
+
+    @Override
+    public void removeRow(char letter, String morse) {
+        remove(morse);
+    }
 }

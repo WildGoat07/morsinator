@@ -1,4 +1,4 @@
-package morsinator.reader;
+package morsinator.table;
 
 public class ConversionRow {
     public char letter;
