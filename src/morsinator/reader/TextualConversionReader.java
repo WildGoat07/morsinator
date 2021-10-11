@@ -33,7 +33,13 @@ public class TextualConversionReader implements ConversionReader {
         while(currentChar != -1) {
             if(readingKey) {
                 // étape 1 : lecture de la clé (la lettre)
-                if(currentChar == '=') {
+                if (currentChar == '\\') {
+                    // échappement de caractère (pour le "=" par exemple)
+                    currentChar = readerTp.read();
+                    if (currentChar == -1)
+                        throw new MorsinatorParseException("Fin de fichier inattendue", readerTp.getTextPos());
+                    key += (char) currentChar;
+                } else if (currentChar == '=') {
                     key = key.trim().toUpperCase();
 
                     // vérifications d'intégrités
