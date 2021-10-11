@@ -101,7 +101,7 @@ public class TextualMorseConverter implements MorseConverter {
                     break;
 
                 case READ_MORSE:
-                    if(c == ' ') {
+                    if (c == ' ' || c == '/') {
                         char letter;
 
                         try {
@@ -112,11 +112,12 @@ public class TextualMorseConverter implements MorseConverter {
 
                         writer.write(letter);
                         step = MorseStep.WAIT_NEXT;
-                    } else if(c == '/') {
-                        writer.write(' ');
-                        step = MorseStep.WAIT_NEXT;
                     } else {
                         morse += c;
+                    }
+                    if (c == '/') {
+                        writer.write(' ');
+                        step = MorseStep.WAIT_NEXT;
                     }
 
                     break;
