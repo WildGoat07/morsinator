@@ -15,6 +15,7 @@ import morsinator.table.TextualConversion;
 import morsinator.text.TextPosition;
 
 import javafx.stage.Stage;
+import javafx.stage.Modality;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -340,6 +341,7 @@ public class MainWindowController {
             tableStage.setScene(scene);
             tableStage.getIcons()
                     .add(new Image(getClass().getClassLoader().getResource("assets/icons/icon.png").toString()));
+            tableStage.initModality(Modality.WINDOW_MODAL);
             tableStage.initOwner(stage);
             tableStage.showAndWait();
             if (lastEditedText)
