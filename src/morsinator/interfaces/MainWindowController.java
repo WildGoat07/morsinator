@@ -96,7 +96,7 @@ public class MainWindowController {
             } catch (MorsinatorParseException e) {
                 Platform.runLater(() -> {
                     TextPosition tp = e.getTextPos();
-                    textErrorLabel.setText("Ligne " + tp.getRow() + " : " + e.getMessage());
+                    textErrorLabel.setText("Position " + tp.getPos() + " : " + e.getMessage());
                     textErrorCircle.setFill(Color.RED);
                 });
             } catch (IOException e) {
@@ -130,7 +130,7 @@ public class MainWindowController {
             } catch (MorsinatorParseException e) {
                 Platform.runLater(() -> {
                     TextPosition tp = e.getTextPos();
-                    morseErrorLabel.setText("Ligne " + tp.getRow() + " : " + e.getMessage());
+                    morseErrorLabel.setText("Position " + tp.getPos() + " : " + e.getMessage());
                     morseErrorCircle.setFill(Color.RED);
                 });
             } catch (IOException e) {
