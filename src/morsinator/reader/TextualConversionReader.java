@@ -28,7 +28,7 @@ public class TextualConversionReader implements ConversionReader {
         String key = "";
         String value = null;
         boolean readingKey = true; // if false, reading value
-        int currentChar = reader.read();
+        int currentChar = readerTp.read();
 
         while(currentChar != -1) {
             if(readingKey) {
@@ -59,7 +59,7 @@ public class TextualConversionReader implements ConversionReader {
                 }
             }
 
-            currentChar = reader.read();
+            currentChar = readerTp.read();
         }
 
         if(readingKey && !key.trim().isEmpty())
