@@ -36,6 +36,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.charset.Charset;
 import java.util.stream.Collectors;
 
 import javafx.fxml.FXML;
@@ -147,9 +148,9 @@ public class MainWindowController {
         try {
             InputStream conversionFile = new FileInputStream("./conversions.txt");
             ConversionReader conversionReader = new TextualConversionReader();
-
-            conversionReader.fill(new InputStreamReader(new BufferedInputStream(conversionFile)), textConversion,
-                    morseConversion);
+            conversionReader.fill(
+                    new InputStreamReader(new BufferedInputStream(conversionFile), Charset.forName("UTF-8")),
+                    textConversion, morseConversion);
             conversionFile.close();
         } catch (FileNotFoundException e) {
             Alert dialog = new Alert(AlertType.ERROR);
