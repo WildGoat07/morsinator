@@ -1,1 +1,1 @@
-start .\jre\bin\java.exe -jar morsinator.jar
+start .\jre\bin\java.exe -jar morsinator.jar %*
