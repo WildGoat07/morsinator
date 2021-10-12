@@ -10,6 +10,12 @@ import morsinator.text.ReaderTextPos;
 import morsinator.text.TextPosition;
 
 public class TextualConversion implements ConversionReader, ConversionWriter {
+    private enum Step {
+        READ_KEY,
+        ESCAPE_KEY_CHAR,
+        READ_VALUE
+    }
+
     private void registerRow(String key, String value, TextConversion tm, MorseConversion mt, TextPosition textPos)
             throws MorsinatorParseException {
         value = value.trim();
@@ -29,18 +35,15 @@ public class TextualConversion implements ConversionReader, ConversionWriter {
 
         String key = "";
         String value = null;
-        boolean readingKey = true; // if false, reading value
+        Step step = Step.READ_KEY;
         int currentChar = readerTp.read();
 
         while (currentChar != -1) {
-            if (readingKey) {
+            if (step == Step.READ_KEY) {
                 // étape 1 : lecture de la clé (la lettre)
                 if (currentChar == '\\') {
                     // échappement de caractère (pour le "=" par exemple)
-                    currentChar = readerTp.read();
-                    if (currentChar == -1)
-                        throw new MorsinatorParseException("Fin de fichier inattendue", readerTp.getTextPos());
-                    key += (char) currentChar;
+                    step = Step.ESCAPE_KEY_CHAR;
                 } else if (currentChar == '=') {
                     key = key.trim().toUpperCase();
 
@@ -48,16 +51,19 @@ public class TextualConversion implements ConversionReader, ConversionWriter {
                     if (key.length() != 1)
                         throw new MorsinatorParseException("Lettre invalide", readerTp.getTextPos());
 
-                    readingKey = false;
+                    step = Step.READ_VALUE;
                     value = "";
                 } else {
                     key += (char) currentChar;
                 }
+            } else if(step == Step.ESCAPE_KEY_CHAR) {
+                key += (char) currentChar;
+                step = Step.READ_VALUE;
             } else {
                 // étape 2 : lecture de la valeur (le code morse)
                 if (currentChar == '\n' && !value.trim().isEmpty()) {
                     registerRow(key, value, tm, mt, readerTp.getTextPos());
-                    readingKey = true;
+                    step = Step.READ_KEY;
                     key = "";
                 } else {
                     value += (char) currentChar;
@@ -67,11 +73,10 @@ public class TextualConversion implements ConversionReader, ConversionWriter {
             currentChar = readerTp.read();
         }
 
-        if (readingKey && !key.trim().isEmpty())
-            throw new MorsinatorParseException("Fin de fichier inattendue", readerTp.getTextPos());
-        else if (!readingKey) {
+        if(step == Step.READ_VALUE)
             registerRow(key, value, tm, mt, readerTp.getTextPos());
-        }
+        else if(!key.trim().isEmpty())
+            throw new MorsinatorParseException("Fin de fichier inattendue", readerTp.getTextPos());
     }
 
     @Override
