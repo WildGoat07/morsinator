@@ -54,13 +54,13 @@ public class EditTableController {
     @FXML
     private TextField addMorse;
     @FXML
-    private TableView rowsList;
+    private TableView<TableRow> rowsList;
     @FXML
-    private TableColumn letterColumn;
+    private TableColumn<TableRow, Character> letterColumn;
     @FXML
-    private TableColumn morseColumn;
+    private TableColumn<TableRow, String> morseColumn;
     @FXML
-    private TableColumn deleteColumn;
+    private TableColumn<TableRow, Void> deleteColumn;
 
     private Stage stage;
     private TextConversion textConversion;
@@ -88,12 +88,12 @@ public class EditTableController {
         letterColumn
                 .setCellValueFactory(new Callback<CellDataFeatures<TableRow, Character>, ObservableValue<Character>>() {
                     public ObservableValue<Character> call(CellDataFeatures<TableRow, Character> row) {
-                        return new ReadOnlyObjectWrapper(row.getValue().letter);
+                        return new ReadOnlyObjectWrapper<Character>(row.getValue().letter);
                     }
                 });
         morseColumn.setCellValueFactory(new Callback<CellDataFeatures<TableRow, String>, ObservableValue<String>>() {
             public ObservableValue<String> call(CellDataFeatures<TableRow, String> row) {
-                return new ReadOnlyObjectWrapper(row.getValue().morse);
+                return new ReadOnlyObjectWrapper<String>(row.getValue().morse);
             }
         });
         deleteColumn.setCellFactory(new Callback<TableColumn<TableRow, Void>, TableCell<TableRow, Void>>() {
