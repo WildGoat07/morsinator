@@ -139,19 +139,20 @@ public class EditTableController {
 
     public void addRow() {
         try {
-            if (addLetter.getText().length() != 1)
+            if (addLetter.getText().trim().length() != 1)
                 throw new IllegalArgumentException("Un seul caractère est autorisé par lettre");
-            if (addMorse.getText().length() == 0)
+            if (addMorse.getText().trim().length() == 0)
                 throw new IllegalArgumentException("Le code morse ne peut pas être vide");
-            char letter = Character.toUpperCase(addLetter.getText().charAt(0));
+            char letter = Character.toUpperCase(addLetter.getText().trim().charAt(0));
+            String morse = addMorse.getText().trim();
             for (Entry<Character, String> row : textConversion.getRows())
                 if (row.getKey().equals(letter))
                     throw new IllegalArgumentException("La lettre a déjà été ajoutée");
-                else if (row.getValue().equals(addMorse.getText()))
+                else if (row.getValue().equals(morse))
                     throw new IllegalArgumentException("Le code morse a déjà été ajouté");
-            morseConversion.addRow(addLetter.getText().charAt(0), addMorse.getText());
-            textConversion.addRow(addLetter.getText().charAt(0), addMorse.getText());
-            pushRow(addLetter.getText().charAt(0), addMorse.getText());
+            morseConversion.addRow(letter, morse);
+            textConversion.addRow(letter, morse);
+            pushRow(letter, morse);
             addLetter.setText("");
             addMorse.setText("");
         } catch (IllegalArgumentException e) {
