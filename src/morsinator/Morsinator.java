@@ -171,5 +171,7 @@ public class Morsinator extends Application {
             System.err.println("Erreur à la fermeture du flux d'écriture dans le fichier de sortie");
             System.exit(1);
         }
+
+        System.exit(0);
     }
 }

@@ -1,3 +1,4 @@
 javac --source-path src -d bin @sources.txt --module-path ~/etudes/jfx/lib --add-modules javafx.controls,javafx.fxml
 cp src/morsinator/interfaces/MainWindow.fxml bin/morsinator/interfaces
+cp src/morsinator/interfaces/EditTable.fxml bin/morsinator/interfaces
 cp -r assets bin
