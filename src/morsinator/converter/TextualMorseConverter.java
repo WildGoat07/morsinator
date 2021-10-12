@@ -32,14 +32,16 @@ public class TextualMorseConverter implements MorseConverter {
     @Override
     public void textToMorse(Reader reader, Writer writer, TextConversion textConversion) throws MorsinatorParseException, IOException {
         ReaderTextPos readerTp = new ReaderTextPos(reader);
-        int current;
+        int readRes;
         boolean firstWord = true;
         TextStep step = TextStep.WAITING_FOR_TOKEN;
 
-        while ((current = readerTp.read()) != -1) {
+        while ((readRes = readerTp.read()) != -1) {
+            char c = (char)readRes;
+
             switch (step) {
                 case WAITING_FOR_TOKEN:
-                    if (!isCharIgnored((char) current)) {
+                    if (!isCharIgnored(c)) {
                         if (!firstWord)
                             writer.write(" / ");
                         firstWord = false;
@@ -47,7 +49,7 @@ public class TextualMorseConverter implements MorseConverter {
                         String morse;
 
                         try {
-                            morse = textConversion.getMorse((char) current);
+                            morse = textConversion.getMorse(c);
                         } catch(IllegalArgumentException e) {
                             throw new MorsinatorParseException(e.getMessage(), readerTp.getTextPos());
                         }
@@ -57,13 +59,13 @@ public class TextualMorseConverter implements MorseConverter {
                     }
                     break;
                 case WORD_PARSING:
-                    if (isCharIgnored((char) current))
+                    if (isCharIgnored(c))
                         step = TextStep.WAITING_FOR_TOKEN;
                     else {
                         String morse = null;
 
                         try {
-                            morse = textConversion.getMorse((char) current);
+                            morse = textConversion.getMorse(c);
                         } catch(IllegalArgumentException e) {
                             throw new MorsinatorParseException(e.getMessage(), readerTp.getTextPos());
                         }
@@ -72,9 +74,6 @@ public class TextualMorseConverter implements MorseConverter {
                     }
 
                     break;
-                default:
-                    break;
-
             }
         }
     }
@@ -82,12 +81,12 @@ public class TextualMorseConverter implements MorseConverter {
     @Override
     public void morseToText(Reader reader, Writer writer, MorseConversion morseConversion) throws MorsinatorParseException, IOException {
         ReaderTextPos readerTp = new ReaderTextPos(reader);
-        int current;
+        int readRes;
         MorseStep step = MorseStep.WAIT_NEXT;
         String morse = "";
 
-        while((current = readerTp.read()) != -1) {
-            char c = (char)current;
+        while((readRes = readerTp.read()) != -1) {
+            char c = (char)readRes;
 
             switch(step) {
                 case WAIT_NEXT:
@@ -111,13 +110,14 @@ public class TextualMorseConverter implements MorseConverter {
                         }
 
                         writer.write(letter);
+
+                        if(c == '/') {
+                            writer.write(' ');
+                        }
+
                         step = MorseStep.WAIT_NEXT;
                     } else {
                         morse += c;
-                    }
-                    if (c == '/') {
-                        writer.write(' ');
-                        step = MorseStep.WAIT_NEXT;
                     }
 
                     break;
