@@ -26,7 +26,6 @@ public class TextualConversion implements ConversionReader, ConversionWriter {
     public void fill(Reader reader, TextConversion tm, MorseConversion mt)
             throws MorsinatorParseException, IOException {
         ReaderTextPos readerTp = new ReaderTextPos(reader);
-        HashSet<String> addedLetters = new HashSet<>();
 
         String key = "";
         String value = null;
@@ -48,10 +47,7 @@ public class TextualConversion implements ConversionReader, ConversionWriter {
                     // vérifications d'intégrités
                     if (key.length() != 1)
                         throw new MorsinatorParseException("Lettre invalide", readerTp.getTextPos());
-                    else if (addedLetters.contains(key))
-                        throw new MorsinatorParseException("Lettre déjà ajoutée", readerTp.getTextPos());
 
-                    addedLetters.add(key);
                     readingKey = false;
                     value = "";
                 } else {
