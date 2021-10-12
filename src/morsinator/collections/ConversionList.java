@@ -9,7 +9,16 @@ import morsinator.table.ConversionRow;
 
 public class ConversionList extends MorsiList<ConversionRow> implements TextConversion {
     public void addRow(char letter, String morse) {
-        add(new ConversionRow(letter, morse));
+        String oMorse;
+
+        try {
+            oMorse = getMorse(letter);
+        } catch(IllegalArgumentException e) {
+            add(new ConversionRow(letter, morse));
+            return;
+        }
+
+        throw new IllegalArgumentException("Lettre '" + letter + "' déjà ajoutée sous le code morse \"" + oMorse + '"');
     }
 
     public String getMorse(char letter) {

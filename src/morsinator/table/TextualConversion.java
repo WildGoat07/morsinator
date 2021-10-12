@@ -13,9 +13,9 @@ public class TextualConversion implements ConversionReader, ConversionWriter {
     private void registerRow(String key, String value, TextConversion tm, MorseConversion mt, TextPosition textPos)
             throws MorsinatorParseException {
         value = value.trim();
-        tm.addRow(key.charAt(0), value);
 
         try {
+            tm.addRow(key.charAt(0), value);
             mt.addRow(key.charAt(0), value);
         } catch (IllegalArgumentException e) {
             throw new MorsinatorParseException(e.getMessage(), textPos);
