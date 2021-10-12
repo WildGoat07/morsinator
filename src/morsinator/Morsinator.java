@@ -55,7 +55,7 @@ public class Morsinator extends Application {
     private static InputStream getConversionFileStream(String[] args) {
         try {
             return new FileInputStream(args[1]);
-        } catch (FileNotFoundException exception) {
+        } catch (FileNotFoundException e) {
             System.err.println("Table de conversion introuvable");
             System.exit(1);
         }
@@ -71,13 +71,13 @@ public class Morsinator extends Application {
         try {
             conversionReader.fill(new InputStreamReader(new BufferedInputStream(conversionFile)), textConversion,
                     morseConversion);
-        } catch (MorsinatorParseException exception) {
-            TextPosition tp = exception.getTextPos();
+        } catch (MorsinatorParseException e) {
+            TextPosition tp = e.getTextPos();
             System.err.println("Erreur de lecture de la table de conversion\n" + args[1] + ":" + tp.getRow()
-                    + ":" + tp.getCol() + " : " + exception.getMessage());
+                    + ":" + tp.getCol() + " : " + e.getMessage());
             System.exit(1);
-        } catch (IOException exception) {
-            System.err.println("Erreur de lecture de la table de conversion\n" + exception.getMessage());
+        } catch (IOException e) {
+            System.err.println("Erreur de lecture de la table de conversion\n" + e.getMessage());
             System.exit(1);
         }
 
@@ -92,7 +92,7 @@ public class Morsinator extends Application {
     private static InputStream openInputStream(String[] args) {
         try {
             return new FileInputStream(args[2]);
-        } catch (FileNotFoundException exception) {
+        } catch (FileNotFoundException e) {
             System.err.println("Fichier d'entrée introuvable");
             System.exit(1);
             return null;
@@ -102,7 +102,7 @@ public class Morsinator extends Application {
     private static OutputStream openOutputStream(String[] args) {
         try {
             return new FileOutputStream(args[3]);
-        } catch (FileNotFoundException exception) {
+        } catch (FileNotFoundException e) {
             System.err.println("Fichier de sortie introuvable");
             System.exit(1);
             return null;
