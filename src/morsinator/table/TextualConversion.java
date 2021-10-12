@@ -36,15 +36,17 @@ public class TextualConversion implements ConversionReader, ConversionWriter {
         String key = "";
         String value = null;
         Step step = Step.READ_KEY;
-        int currentChar = readerTp.read();
+        int readRes;
 
-        while (currentChar != -1) {
+        while ((readRes = readerTp.read()) != -1) {
+            char c = (char)readRes;
+
             if (step == Step.READ_KEY) {
                 // étape 1 : lecture de la clé (la lettre)
-                if (currentChar == '\\') {
+                if (c == '\\') {
                     // échappement de caractère (pour le "=" par exemple)
                     step = Step.ESCAPE_KEY_CHAR;
-                } else if (currentChar == '=') {
+                } else if (c == '=') {
                     key = key.trim().toUpperCase();
 
                     // vérifications d'intégrités
@@ -54,23 +56,21 @@ public class TextualConversion implements ConversionReader, ConversionWriter {
                     step = Step.READ_VALUE;
                     value = "";
                 } else {
-                    key += (char) currentChar;
+                    key += c;
                 }
             } else if(step == Step.ESCAPE_KEY_CHAR) {
-                key += (char) currentChar;
+                key += c;
                 step = Step.READ_VALUE;
             } else {
                 // étape 2 : lecture de la valeur (le code morse)
-                if (currentChar == '\n' && !value.trim().isEmpty()) {
+                if (c == '\n' && !value.trim().isEmpty()) {
                     registerRow(key, value, tm, mt, readerTp.getTextPos());
                     step = Step.READ_KEY;
                     key = "";
                 } else {
-                    value += (char) currentChar;
+                    value += c;
                 }
             }
-
-            currentChar = readerTp.read();
         }
 
         if(step == Step.READ_VALUE)
