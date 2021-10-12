@@ -45,7 +45,7 @@ public class ConversionBinaryTree extends MorsiBinaryTree<String, Character> imp
         }
 
         if(contains) {
-            throw new IllegalArgumentException("Code morse de '" + letter + "' déjà ajouté sous la lettre '" + get(morse) + "'");
+            throw new IllegalArgumentException("Code morse \"" + morse + "\" déjà ajouté sous la lettre '" + get(morse) + "'");
         } else {
             set(morse, letter);
         }
