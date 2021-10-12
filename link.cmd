@@ -1,0 +1,1 @@
+d:/ProgramFiles/jdk-17/bin/jlink.exe --module-path D:\ProgramFiles\javafx-jmods-17.0.0.1;bin --add-modules morsinator --output jre
