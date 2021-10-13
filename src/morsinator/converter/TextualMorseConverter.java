@@ -11,6 +11,9 @@ import morsinator.text.ReaderTextPos;
 import morsinator.text.TextPosition;
 
 public class TextualMorseConverter implements MorseConverter {
+    /**
+     * Liste des caractères à ignorer lors de la traduction morse
+     */
     private static final char[] ignoredChars = new char[] { '\n', '\r', ' ' };
 
     private static boolean isCharIgnored(char toTest) {
@@ -21,93 +24,99 @@ public class TextualMorseConverter implements MorseConverter {
     }
 
     @Override
-    public void textToMorse(Reader reader, Writer writer, TextConversion textConversion) throws MorsinatorParseException, IOException {
+    public void textToMorse(Reader reader, Writer writer, TextConversion textConversion)
+            throws MorsinatorParseException, IOException {
         ReaderTextPos readerTp = new ReaderTextPos(reader);
-        int readRes;
-        boolean inWord = false;
-        boolean firstWord = true;
+        int readRes; // résultat de la lecture du Reader
+        boolean inWord = false; // vrai si on est en train d'analyse un mot
+        boolean firstWord = true; // permet de ne pas gérer les espaces avant le premier mot
 
-        while ((readRes = readerTp.read()) != -1) {
-            char c = (char)readRes;
+        while ((readRes = readerTp.read()) != -1) { // tant que on est pas à la fin
+            char c = (char) readRes;
 
-            if(isCharIgnored(c)) {
+            if (isCharIgnored(c)) {
+                // si le caractère est ignoré, c'est qu'on est en dehors d'un mot
                 inWord = false;
             } else {
-                if(inWord) {
+                if (inWord) {
+                    // dans un mot, on ajoute une nouvelle lettre
                     writer.write(' ');
-                } else {
+                } else { // sinon on débute un nouveau mot
                     inWord = true;
-
-                    if(firstWord) {
+                    if (firstWord) {
                         firstWord = false;
                     } else {
+                        // si on est après le premier mot, on sépare le morse
                         writer.write(" / ");
                     }
                 }
 
-                String morse;
-
                 try {
-                    morse = textConversion.getMorse(c);
-                } catch(IllegalArgumentException e) {
+                    // on écrit le morse dans le buffer
+                    writer.write(textConversion.getMorse(c));
+                } catch (IllegalArgumentException e) {
+                    // erreur de lettre inconnue
                     throw new MorsinatorParseException(e.getMessage(), readerTp.getTextPos());
                 }
-
-                writer.write(morse);
             }
         }
     }
 
     @Override
-    public void morseToText(Reader reader, Writer writer, MorseConversion morseConversion) throws MorsinatorParseException, IOException {
+    public void morseToText(Reader reader, Writer writer, MorseConversion morseConversion)
+            throws MorsinatorParseException, IOException {
         ReaderTextPos readerTp = new ReaderTextPos(reader);
-        int readRes;
-        boolean readingMorse = false;
-        String morse = "";
+        int readRes; // résultat de la lecture du Reader
+        boolean readingMorse = false; // vrai si on lit un caractère morse
+        String morse = ""; // buffer du caractère morse
 
-        while((readRes = readerTp.read()) != -1) {
-            char c = (char)readRes;
+        while ((readRes = readerTp.read()) != -1) { // tant qu'on est pas à la fin du fichier
+            char c = (char) readRes;
 
-            if(readingMorse) {
+            if (readingMorse) {
+                // si on lit déjà une lettre morse
                 if (c == ' ' || c == '/') {
-                    char letter;
-
+                    // si on termine une lettre morse
                     try {
-                        letter = morseConversion.getLetter(morse);
-                    } catch(IllegalArgumentException e) {
+                        // on écrit l'ancien buffer en texte classique
+                        writer.write(morseConversion.getLetter(morse));
+                    } catch (IllegalArgumentException e) {
+                        // erreur de code morse inconnu
                         throw new MorsinatorParseException(e.getMessage(), readerTp.getTextPos());
                     }
 
-                    writer.write(letter);
-
-                    if(c == '/') {
+                    if (c == '/') {
+                        // si on change de mot, on ajoute un espace
                         writer.write(' ');
                     }
 
-                    readingMorse = false;
+                    readingMorse = false; // on viens de finir un mot, on le signale
                 } else {
+                    // sinon, on ajoute le code morse au buffer de lettre
                     morse += c;
                 }
             } else {
-                if(c == '/') {
+                // si on ne lit pas de lettre morse
+                if (c == '/') {
+                    // séparateur de mot, on ajoute un espace
                     writer.write(' ');
                 } else if (!isCharIgnored(c)) {
+                    // si on commence un mot
                     morse = Character.toString(c);
                     readingMorse = true;
                 }
             }
         }
 
-        if(readingMorse) {
-            char letter;
-
+        if (readingMorse) {
+            // si on était en train de lire une lettre morse à la fin du fichier
             try {
-                letter = morseConversion.getLetter(morse);
-            } catch(IllegalArgumentException e) {
+                // on ajoute cette dernière lettre
+                writer.write(morseConversion.getLetter(morse));
+            } catch (IllegalArgumentException e) {
+                // erreur de code morse inconnu
                 throw new MorsinatorParseException(e.getMessage(), readerTp.getTextPos());
             }
-
-            writer.write(letter);
         }
     }
 }
