@@ -92,7 +92,7 @@ public class TextualMorseConverter implements MorseConverter {
                 if(c == '/') {
                     writer.write(' ');
                 } else if (!isCharIgnored(c)) {
-                    morse = "" + c;
+                    morse = Character.toString(c);
                     readingMorse = true;
                 }
             }
