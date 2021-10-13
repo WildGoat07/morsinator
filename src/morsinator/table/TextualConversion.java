@@ -60,7 +60,7 @@ public class TextualConversion implements ConversionReader, ConversionWriter {
                 }
             } else if(step == Step.ESCAPE_KEY_CHAR) {
                 key += c;
-                step = Step.READ_VALUE;
+                step = Step.READ_KEY;
             } else {
                 // étape 2 : lecture de la valeur (le code morse)
                 if (c == '\n' && !value.trim().isEmpty()) {
