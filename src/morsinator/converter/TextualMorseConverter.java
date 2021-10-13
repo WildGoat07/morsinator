@@ -75,7 +75,7 @@ public class TextualMorseConverter implements MorseConverter {
 
             if (readingMorse) {
                 // si on lit déjà une lettre morse
-                if (c == ' ' || c == '/') {
+                if (isCharIgnored(c) || c == '/') {
                     // si on termine une lettre morse
                     try {
                         // on écrit l'ancien buffer en texte classique
