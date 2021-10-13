@@ -35,6 +35,7 @@ public class ConversionBinaryTree extends MorsiBinaryTree<String, Character> imp
         super(morseConvert);
     }
 
+    @Override
     public void addRow(char letter, String morse) {
         boolean contains;
 
@@ -51,6 +52,7 @@ public class ConversionBinaryTree extends MorsiBinaryTree<String, Character> imp
         }
     }
 
+    @Override
     public char getLetter(String morse) {
         try {
             return get(morse);

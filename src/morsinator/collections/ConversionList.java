@@ -8,12 +8,13 @@ import morsinator.collections.generics.MorsiList;
 import morsinator.table.ConversionRow;
 
 public class ConversionList extends MorsiList<ConversionRow> implements TextConversion {
+    @Override
     public void addRow(char letter, String morse) {
         String oMorse;
 
         try {
             oMorse = getMorse(letter);
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             add(new ConversionRow(letter, morse));
             return;
         }
@@ -21,6 +22,7 @@ public class ConversionList extends MorsiList<ConversionRow> implements TextConv
         throw new IllegalArgumentException("Lettre '" + letter + "' déjà ajoutée sous le code morse \"" + oMorse + '"');
     }
 
+    @Override
     public String getMorse(char letter) {
         letter = Character.toUpperCase(letter);
 
