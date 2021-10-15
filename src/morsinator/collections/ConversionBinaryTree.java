@@ -35,6 +35,13 @@ public class ConversionBinaryTree extends MorsiBinaryTree<String, Character> imp
         super(morseConvert);
     }
 
+    /**
+     * Ajoute un couple lettre et code morse à l'arbre de traduction de morse
+     * vers texte.
+     *
+     * @param letter lettre à associer au code morse
+     * @param morse code morse à associer à la lettre
+     */
     @Override
     public void addRow(char letter, String morse) {
         boolean contains;
@@ -52,6 +59,12 @@ public class ConversionBinaryTree extends MorsiBinaryTree<String, Character> imp
         }
     }
 
+    /**
+     * Traduit un code morse en lettre
+     *
+     * @param morse code morse à traduire
+     * @return lettre correspondant au code morse
+     */
     @Override
     public char getLetter(String morse) {
         try {
@@ -63,6 +76,13 @@ public class ConversionBinaryTree extends MorsiBinaryTree<String, Character> imp
         }
     }
 
+    /**
+     * Retire un couple lettre et code morse de la table de traduction de morse
+     * vers texte
+     *
+     * @param letter lettre du couple à supprimer
+     * @param morse code morse du couple à supprimer
+     */
     @Override
     public void removeRow(char letter, String morse) {
         remove(morse);
